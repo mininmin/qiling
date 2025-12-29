@@ -1,0 +1,393 @@
+# Qi Ling Theme English Translation
+# Copyright (C) 2024
+# This file is distributed under the GNU General Public License v2.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Qi Ling Theme 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-12-29 02:59+0800\n"
+"Last-Translator: \n"
+"Language-Team: English\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.8\n"
+
+# 404 Page
+msgid "页面未找到"
+msgstr "Page Not Found"
+
+msgid "抱歉，您访问的页面不存在或已被移除。请检查网址是否正确，或返回首页继续浏览。"
+msgstr "Sorry, the page you are looking for does not exist or has been removed. Please check the URL or return to the homepage."
+
+msgid "返回首页"
+msgstr "Back to Home"
+
+msgid "返回上页"
+msgstr "Go Back"
+
+msgid "也许您可以试试搜索："
+msgstr "Try searching:"
+
+msgid "输入关键词搜索..."
+msgstr "Enter keywords to search..."
+
+msgid "搜索"
+msgstr "Search"
+
+# Header
+msgid "菜单"
+msgstr "Menu"
+
+msgid "请输入关键词搜索..."
+msgstr "Enter keywords to search..."
+
+# Footer
+msgid "关于我们"
+msgstr "About Us"
+
+msgid "专业的企业服务提供商，致力于为客户提供优质的产品与服务。"
+msgstr "A professional enterprise service provider, committed to providing customers with quality products and services."
+
+msgid "快速链接"
+msgstr "Quick Links"
+
+msgid "联系方式"
+msgstr "Contact"
+
+msgid "关注我们"
+msgstr "Follow Us"
+
+msgid "微信二维码"
+msgstr "WeChat QR Code"
+
+msgid "扫码关注公众号"
+msgstr "Scan to follow our account"
+
+msgid "版权所有"
+msgstr "All Rights Reserved"
+
+msgid "电话咨询"
+msgstr "Call Us"
+
+msgid "QQ咨询"
+msgstr "QQ Chat"
+
+msgid "微信咨询"
+msgstr "WeChat"
+
+msgid "微信"
+msgstr "WeChat"
+
+msgid "扫码添加微信"
+msgstr "Scan to add WeChat"
+
+msgid "返回顶部"
+msgstr "Back to Top"
+
+# Theme Settings
+msgid "企业主题设置"
+msgstr "Theme Settings"
+
+msgid "基础设置"
+msgstr "Basic Settings"
+
+msgid "模块管理"
+msgstr "Module Manager"
+
+msgid "网站 Logo"
+msgstr "Site Logo"
+
+msgid "企业名称"
+msgstr "Company Name"
+
+msgid "联系电话"
+msgstr "Phone Number"
+
+msgid "联系邮箱"
+msgstr "Email Address"
+
+msgid "企业地址"
+msgstr "Company Address"
+
+msgid "备案信息"
+msgstr "Registration Info"
+
+msgid "ICP 备案号"
+msgstr "ICP Number"
+
+msgid "公安备案号"
+msgstr "Security Number"
+
+msgid "公安备案图标"
+msgstr "Security Icon"
+
+msgid "右侧浮动栏"
+msgstr "Float Widgets"
+
+msgid "悬浮电话"
+msgstr "Float Phone"
+
+msgid "悬浮QQ"
+msgstr "Float QQ"
+
+msgid "悬浮微信二维码"
+msgstr "Float WeChat QR"
+
+msgid "自定义悬浮文字"
+msgstr "Custom Float Text"
+
+msgid "自定义悬浮链接"
+msgstr "Custom Float URL"
+
+msgid "社交媒体"
+msgstr "Social Media"
+
+msgid "微信公众号二维码"
+msgstr "WeChat QR Code"
+
+msgid "微博链接"
+msgstr "Weibo URL"
+
+msgid "页脚设置"
+msgstr "Footer Settings"
+
+msgid "版权信息（支持HTML）"
+msgstr "Copyright (HTML allowed)"
+
+msgid "公司简介"
+msgstr "Company Brief"
+
+msgid "关于我们标题"
+msgstr "About Us Title"
+
+msgid "快速链接标题"
+msgstr "Quick Links Title"
+
+msgid "联系方式标题"
+msgstr "Contact Title"
+
+msgid "关注我们标题"
+msgstr "Follow Us Title"
+
+msgid "SEO 设置"
+msgstr "SEO Settings"
+
+msgid "默认标题"
+msgstr "Default Title"
+
+msgid "默认描述"
+msgstr "Default Description"
+
+msgid "默认关键词"
+msgstr "Default Keywords"
+
+msgid "高级设置"
+msgstr "Advanced Settings"
+
+msgid "主色调"
+msgstr "Primary Color"
+
+msgid "百度统计代码/ID"
+msgstr "Analytics Code/ID"
+
+msgid "自定义 CSS"
+msgstr "Custom CSS"
+
+msgid "自定义 JS"
+msgstr "Custom JS"
+
+msgid "选择图片"
+msgstr "Select Image"
+
+msgid "移除"
+msgstr "Remove"
+
+msgid "主导航菜单"
+msgstr "Primary Navigation"
+
+msgid "顶部导航菜单"
+msgstr "Top Navigation"
+
+msgid "页脚导航菜单"
+msgstr "Footer Navigation"
+
+msgid "移动端导航菜单"
+msgstr "Mobile Navigation"
+
+msgid "社交媒体菜单"
+msgstr "Social Menu"
+
+msgid "主侧边栏"
+msgstr "Main Sidebar"
+
+msgid "在页面侧边栏显示的小工具"
+msgstr "Widgets shown in sidebar"
+
+msgid "页脚区域 %d"
+msgstr "Footer Area %d"
+
+msgid "页脚第 %d 列小工具"
+msgstr "Footer column %d widgets"
+
+msgid "商店侧边栏"
+msgstr "Shop Sidebar"
+
+msgid "商店页面侧边栏小工具"
+msgstr "Shop page sidebar widgets"
+
+msgid "阅读更多"
+msgstr "Read More"
+
+msgid "搜索结果"
+msgstr "Search Results"
+
+msgid "未找到结果"
+msgstr "Nothing Found"
+
+msgid "电话"
+msgstr "Phone"
+
+msgid "邮箱"
+msgstr "Email"
+
+msgid "地址"
+msgstr "Address"
+
+msgid "提交留言"
+msgstr "Submit"
+
+msgid "您的姓名 *"
+msgstr "Your Name *"
+
+msgid "联系电话 *"
+msgstr "Phone Number *"
+
+msgid "电子邮箱"
+msgstr "Email"
+
+msgid "您的留言内容..."
+msgstr "Your message..."
+
+msgid "联系我们"
+msgstr "Contact Us"
+
+msgid "图文组合布局"
+msgstr "Image Text Layout"
+
+msgid "图文模块"
+msgstr "Image Text Module"
+
+msgid "多列布局模块"
+msgstr "Columns Layout Module"
+
+msgid "多列布局"
+msgstr "Columns Layout"
+
+# Breadcrumb
+msgid "面包屑导航"
+msgstr "Breadcrumb"
+
+msgid "首页"
+msgstr "Home"
+
+msgid "404"
+msgstr "404"
+
+# Comments
+msgid "发表评论"
+msgstr "Leave a Comment"
+
+msgid "1条评论"
+msgstr "1 Comment"
+
+msgid "%条评论"
+msgstr "% Comments"
+
+msgid "编辑"
+msgstr "Edit"
+
+# Navigation
+msgid "← 上一页"
+msgstr "← Previous"
+
+msgid "下一页 →"
+msgstr "Next →"
+
+# Modules
+msgid "产品列表展示"
+msgstr "Products Display"
+
+msgid "产品列表"
+msgstr "Products List"
+
+msgid "产品中心"
+msgstr "Products"
+
+msgid "企业动态新闻展示"
+msgstr "News Display"
+
+msgid "新闻列表"
+msgstr "News List"
+
+msgid "新闻动态"
+msgstr "News"
+
+msgid "案例展示"
+msgstr "Case Studies"
+
+msgid "成功案例"
+msgstr "Success Stories"
+
+# Customizer
+msgid "主题颜色"
+msgstr "Theme Colors"
+
+msgid "头部设置"
+msgstr "Header Settings"
+
+msgid "启用固定头部"
+msgstr "Enable Sticky Header"
+
+# Contact Module
+msgid "有任何问题？请随时与我们联系"
+msgstr "Have any questions? Feel free to contact us"
+
+msgid "公司名称"
+msgstr "Company Name"
+
+msgid "公司地址"
+msgstr "Company Address"
+
+msgid "您的留言内容... *"
+msgstr "Your message... *"
+
+msgid "期待与您合作"
+msgstr "Looking forward to working with you"
+
+msgid "我们将竭诚为您服务"
+msgstr "We will serve you wholeheartedly"
+
+# Float Widgets
+msgid "QQ在线咨询"
+msgstr "QQ Online Chat"
+
+# Banner Module
+msgid "专业企业解决方案"
+msgstr "Professional Enterprise Solutions"
+
+msgid "助力企业数字化转型，提供一站式服务"
+msgstr "Helping enterprises with digital transformation, providing one-stop services"
+
+msgid "助力企业数字化转型"
+msgstr "Helping enterprises with digital transformation"
+
+msgid "了解更多"
+msgstr "Learn More"
+
+msgid "请上传图片"
+msgstr "Please upload an image"

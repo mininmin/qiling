@@ -1,0 +1,798 @@
+<?php
+/**
+ * Meta Boxes - Page Modules Builder
+ * 
+ * @package Developer_Starter
+ */
+
+namespace Developer_Starter\Admin;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+class Meta_Boxes {
+
+    private $module_fields = array();
+
+    public function __construct() {
+        add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+        add_action( 'save_post', array( $this, 'save_meta_boxes' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+        $this->init_module_fields();
+    }
+
+    private function init_module_fields() {
+        $this->module_fields = array(
+            'banner' => array(
+                'title' => '首屏Banner',
+                'fields' => array(
+                    array( 'id' => 'banner_layout', 'label' => '布局', 'type' => 'select', 'options' => array( 'slider' => '轮播图', 'image_text' => '图文布局' ), 'default' => 'slider' ),
+                    array( 'id' => 'banner_height', 'label' => '高度', 'type' => 'select', 'options' => array( 'full' => '全屏', 'large' => '80%', 'medium' => '60%' ), 'default' => 'full' ),
+                    array( 'id' => 'banner_image_position', 'label' => '图片位置', 'type' => 'select', 'options' => array( 'right' => '右侧', 'left' => '左侧' ), 'default' => 'right' ),
+                    array( 
+                        'id' => 'banner_slides', 
+                        'label' => '幻灯片', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'image', 'label' => '图片', 'type' => 'image' ),
+                            array( 'id' => 'title', 'label' => '标题', 'type' => 'text' ),
+                            array( 'id' => 'subtitle', 'label' => '副标题', 'type' => 'text' ),
+                            array( 'id' => 'btn_text', 'label' => '按钮文字', 'type' => 'text' ),
+                            array( 'id' => 'btn_url', 'label' => '按钮链接', 'type' => 'text' ),
+                        ),
+                        'default_items' => array(
+                            array( 'image' => '', 'title' => '专业企业解决方案', 'subtitle' => '助力企业数字化转型，提供一站式服务', 'btn_text' => '了解更多', 'btn_url' => '#' ),
+                            array( 'image' => '', 'title' => '10年行业深耕', 'subtitle' => '服务超过500家企业客户', 'btn_text' => '查看案例', 'btn_url' => '#' ),
+                        ),
+                    ),
+                ),
+            ),
+            'services' => array(
+                'title' => '服务展示',
+                'fields' => array(
+                    array( 'id' => 'services_title', 'label' => '标题', 'type' => 'text', 'default' => '我们的服务' ),
+                    array( 'id' => 'services_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '为企业提供全方位的专业服务' ),
+                    array( 
+                        'id' => 'services_items', 
+                        'label' => '服务项目', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'icon', 'label' => '图标', 'type' => 'text' ),
+                            array( 'id' => 'title', 'label' => '标题', 'type' => 'text' ),
+                            array( 'id' => 'desc', 'label' => '描述', 'type' => 'textarea' ),
+                            array( 'id' => 'link', 'label' => '链接', 'type' => 'text' ),
+                        ),
+                        'default_items' => array(
+                            array( 'icon' => '01', 'title' => '产品研发', 'desc' => '提供专业的产品研发服务，从需求分析到产品上线全流程支持', 'link' => '#' ),
+                            array( 'icon' => '02', 'title' => '解决方案', 'desc' => '针对不同行业提供定制化解决方案，满足企业个性化需求', 'link' => '#' ),
+                            array( 'icon' => '03', 'title' => '技术支持', 'desc' => '7x24小时技术支持服务，快速响应解决技术问题', 'link' => '#' ),
+                            array( 'icon' => '04', 'title' => '数据分析', 'desc' => '专业数据分析团队，助力企业数据驱动决策', 'link' => '#' ),
+                        ),
+                    ),
+                ),
+            ),
+            'features' => array(
+                'title' => '企业优势',
+                'fields' => array(
+                    array( 'id' => 'features_title', 'label' => '标题', 'type' => 'text', 'default' => '为什么选择我们' ),
+                    array( 'id' => 'features_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '我们的核心竞争优势' ),
+                    array( 
+                        'id' => 'features_items', 
+                        'label' => '优势项目', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'icon', 'label' => '图标', 'type' => 'text' ),
+                            array( 'id' => 'title', 'label' => '标题', 'type' => 'text' ),
+                            array( 'id' => 'desc', 'label' => '描述', 'type' => 'text' ),
+                        ),
+                        'default_items' => array(
+                            array( 'icon' => '+', 'title' => '专业团队', 'desc' => '拥有10年行业经验的专业团队' ),
+                            array( 'icon' => '+', 'title' => '优质服务', 'desc' => '7x24小时全天候服务支持' ),
+                            array( 'icon' => '+', 'title' => '价格透明', 'desc' => '无隐形消费，明码标价' ),
+                            array( 'icon' => '+', 'title' => '品质保障', 'desc' => 'ISO9001质量管理体系认证' ),
+                        ),
+                    ),
+                ),
+            ),
+            'stats' => array(
+                'title' => '数据统计',
+                'fields' => array(
+                    array( 'id' => 'stats_bg_image', 'label' => '背景图', 'type' => 'image' ),
+                    array( 'id' => 'stats_text_align', 'label' => '文字位置', 'type' => 'select', 'options' => array( 'left' => '左对齐', 'center' => '居中', 'right' => '右对齐' ), 'default' => 'center' ),
+                    array( 
+                        'id' => 'stats_items', 
+                        'label' => '统计数据', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'number', 'label' => '数字', 'type' => 'text' ),
+                            array( 'id' => 'label', 'label' => '标签', 'type' => 'text' ),
+                        ),
+                        'default_items' => array(
+                            array( 'number' => '500', 'label' => '服务客户' ),
+                            array( 'number' => '10', 'label' => '年行业经验' ),
+                            array( 'number' => '50', 'label' => '专业团队' ),
+                            array( 'number' => '99', 'label' => '客户满意度' ),
+                        ),
+                    ),
+                ),
+            ),
+            'cta' => array(
+                'title' => 'CTA按钮',
+                'fields' => array(
+                    array( 'id' => 'cta_title', 'label' => '标题', 'type' => 'text', 'default' => '准备好开始了吗？' ),
+                    array( 'id' => 'cta_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '立即联系我们，获取专业方案和报价' ),
+                    array( 'id' => 'cta_button_text', 'label' => '按钮文字', 'type' => 'text', 'default' => '免费咨询' ),
+                    array( 'id' => 'cta_button_url', 'label' => '按钮链接', 'type' => 'text', 'default' => '#contact' ),
+                ),
+            ),
+            'clients' => array(
+                'title' => '合作客户',
+                'fields' => array(
+                    array( 'id' => 'clients_title', 'label' => '标题', 'type' => 'text', 'default' => '合作客户' ),
+                    array( 
+                        'id' => 'clients_items', 
+                        'label' => '客户列表', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'logo', 'label' => 'Logo', 'type' => 'image' ),
+                            array( 'id' => 'name', 'label' => '名称', 'type' => 'text' ),
+                        ),
+                        'default_items' => array(
+                            array( 'logo' => '', 'name' => '客户A公司' ),
+                            array( 'logo' => '', 'name' => '客户B集团' ),
+                            array( 'logo' => '', 'name' => '客户C科技' ),
+                            array( 'logo' => '', 'name' => '客户D企业' ),
+                        ),
+                    ),
+                ),
+            ),
+            'image_text' => array(
+                'title' => '图文模块',
+                'fields' => array(
+                    array( 'id' => 'image_text_layout', 'label' => '布局', 'type' => 'select', 'options' => array( 'left' => '图片在左', 'right' => '图片在右' ), 'default' => 'left' ),
+                    array( 'id' => 'image_text_image', 'label' => '图片', 'type' => 'image' ),
+                    array( 'id' => 'image_text_title', 'label' => '标题', 'type' => 'text', 'default' => '关于我们' ),
+                    array( 'id' => 'image_text_content', 'label' => '内容', 'type' => 'editor', 'default' => '公司简介内容...' ),
+                    array( 'id' => 'image_text_button', 'label' => '按钮文字', 'type' => 'text', 'default' => '了解更多' ),
+                    array( 'id' => 'image_text_url', 'label' => '按钮链接', 'type' => 'text', 'default' => '#' ),
+                ),
+            ),
+            'timeline' => array(
+                'title' => '时间轴',
+                'fields' => array(
+                    array( 'id' => 'timeline_title', 'label' => '标题', 'type' => 'text', 'default' => '发展历程' ),
+                    array( 
+                        'id' => 'timeline_items', 
+                        'label' => '时间节点', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'year', 'label' => '年份', 'type' => 'text' ),
+                            array( 'id' => 'title', 'label' => '标题', 'type' => 'text' ),
+                            array( 'id' => 'desc', 'label' => '描述', 'type' => 'textarea' ),
+                        ),
+                        'default_items' => array(
+                            array( 'year' => '2020', 'title' => '公司成立', 'desc' => '正式成立，开始创业之旅' ),
+                            array( 'year' => '2021', 'title' => '业务扩展', 'desc' => '团队规模扩大至50人' ),
+                            array( 'year' => '2022', 'title' => '产品升级', 'desc' => '发布2.0版本产品' ),
+                            array( 'year' => '2023', 'title' => '全国布局', 'desc' => '业务覆盖全国20个省市' ),
+                        ),
+                    ),
+                ),
+            ),
+            'faq' => array(
+                'title' => '常见问题',
+                'fields' => array(
+                    array( 'id' => 'faq_title', 'label' => '标题', 'type' => 'text', 'default' => '常见问题' ),
+                    array( 
+                        'id' => 'faq_items', 
+                        'label' => '问答', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'question', 'label' => '问题', 'type' => 'text' ),
+                            array( 'id' => 'answer', 'label' => '答案', 'type' => 'textarea' ),
+                        ),
+                        'default_items' => array(
+                            array( 'question' => '你们的服务范围是什么？', 'answer' => '我们提供全国范围内的服务。' ),
+                            array( 'question' => '如何与你们取得联系？', 'answer' => '您可以通过页面底部的联系方式联系我们。' ),
+                        ),
+                    ),
+                ),
+            ),
+            'news' => array(
+                'title' => '新闻列表',
+                'fields' => array(
+                    array( 'id' => 'news_title', 'label' => '标题', 'type' => 'text', 'default' => '新闻动态' ),
+                    array( 'id' => 'news_count', 'label' => '数量', 'type' => 'number', 'default' => '6' ),
+                    array( 'id' => 'news_columns', 'label' => '列数', 'type' => 'select', 'options' => array( '2' => '2列', '3' => '3列', '4' => '4列' ), 'default' => '3' ),
+                    array( 'id' => 'news_categories', 'label' => '分类ID', 'type' => 'text' ),
+                    array( 'id' => 'news_show_image', 'label' => '显示图片', 'type' => 'select', 'options' => array( '1' => '是', '0' => '否' ), 'default' => '1' ),
+                    array( 'id' => 'news_image_height', 'label' => '图片高度', 'type' => 'text', 'default' => '200px' ),
+                    array( 'id' => 'news_show_excerpt', 'label' => '显示摘要', 'type' => 'select', 'options' => array( '1' => '是', '0' => '否' ), 'default' => '1' ),
+                ),
+            ),
+            'products' => array(
+                'title' => '产品列表',
+                'fields' => array(
+                    array( 'id' => 'products_title', 'label' => '标题', 'type' => 'text', 'default' => '产品中心' ),
+                    array( 'id' => 'products_count', 'label' => '数量', 'type' => 'number', 'default' => '8' ),
+                    array( 'id' => 'products_columns', 'label' => '列数', 'type' => 'select', 'options' => array( '3' => '3列', '4' => '4列' ), 'default' => '4' ),
+                    array( 'id' => 'products_categories', 'label' => '分类ID', 'type' => 'text' ),
+                    array( 'id' => 'products_show_image', 'label' => '显示图片', 'type' => 'select', 'options' => array( '1' => '是', '0' => '否' ), 'default' => '1' ),
+                    array( 'id' => 'products_image_height', 'label' => '图片高度', 'type' => 'text', 'default' => '200px' ),
+                ),
+            ),
+            'cases' => array(
+                'title' => '案例展示',
+                'fields' => array(
+                    array( 'id' => 'cases_title', 'label' => '标题', 'type' => 'text', 'default' => '成功案例' ),
+                    array( 'id' => 'cases_count', 'label' => '数量', 'type' => 'number', 'default' => '6' ),
+                    array( 'id' => 'cases_columns', 'label' => '列数', 'type' => 'select', 'options' => array( '2' => '2列', '3' => '3列', '4' => '4列' ), 'default' => '3' ),
+                    array( 'id' => 'cases_categories', 'label' => '分类ID', 'type' => 'text' ),
+                    array( 'id' => 'cases_show_image', 'label' => '显示图片', 'type' => 'select', 'options' => array( '1' => '是', '0' => '否' ), 'default' => '1' ),
+                    array( 'id' => 'cases_image_height', 'label' => '图片高度', 'type' => 'text', 'default' => '200px' ),
+                ),
+            ),
+            'contact' => array(
+                'title' => '联系我们',
+                'fields' => array(
+                    array( 'id' => 'contact_title', 'label' => '标题', 'type' => 'text', 'default' => '联系我们' ),
+                    array( 'id' => 'contact_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '有任何问题？请随时与我们联系' ),
+                    array( 'id' => 'contact_show_form', 'label' => '显示表单', 'type' => 'select', 'options' => array( '1' => '是', '0' => '否' ), 'default' => '1' ),
+                    array( 'id' => 'contact_image', 'label' => '右侧图片', 'type' => 'image', 'description' => '关闭表单时显示的图片' ),
+                ),
+            ),
+            'columns' => array(
+                'title' => '多列布局',
+                'fields' => array(
+                    array( 'id' => 'columns_count', 'label' => '列数', 'type' => 'select', 'options' => array( '2' => '2列', '3' => '3列', '4' => '4列' ), 'default' => '3' ),
+                    array( 
+                        'id' => 'columns_items', 
+                        'label' => '列内容', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'title', 'label' => '标题', 'type' => 'text' ),
+                            array( 'id' => 'content', 'label' => '内容', 'type' => 'textarea' ),
+                            array( 'id' => 'image', 'label' => '图片', 'type' => 'image' ),
+                        ),
+                        'default_items' => array(
+                            array( 'title' => '第一列', 'content' => '内容描述', 'image' => '' ),
+                            array( 'title' => '第二列', 'content' => '内容描述', 'image' => '' ),
+                            array( 'title' => '第三列', 'content' => '内容描述', 'image' => '' ),
+                        ),
+                    ),
+                ),
+            ),
+            'downloads' => array(
+                'title' => '下载中心',
+                'fields' => array(
+                    array( 'id' => 'downloads_title', 'label' => '标题', 'type' => 'text', 'default' => '资料下载' ),
+                    array( 'id' => 'downloads_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'downloads_columns', 'label' => '列数', 'type' => 'select', 'options' => array( '1' => '1列', '2' => '2列', '3' => '3列' ), 'default' => '1' ),
+                    array( 
+                        'id' => 'downloads_items', 
+                        'label' => '下载项', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'title', 'label' => '文件名称', 'type' => 'text' ),
+                            array( 'id' => 'size', 'label' => '文件大小', 'type' => 'text' ),
+                            array( 'id' => 'file', 'label' => '文件链接(可填外部URL)', 'type' => 'text' ),
+                            array( 'id' => 'icon', 'label' => '图标(emoji)', 'type' => 'text' ),
+                        ),
+                        'default_items' => array(
+                            array( 'title' => '产品手册', 'size' => '2.5MB', 'file' => '', 'icon' => '📄' ),
+                            array( 'title' => '技术白皮书', 'size' => '1.2MB', 'file' => '', 'icon' => '📋' ),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+
+    public function enqueue_scripts( $hook ) {
+        if ( ! in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
+            return;
+        }
+        wp_enqueue_media();
+        wp_enqueue_script( 'jquery-ui-sortable' );
+    }
+
+    public function add_meta_boxes() {
+        add_meta_box(
+            'developer_starter_modules',
+            '页面模块配置',
+            array( $this, 'render_modules_meta_box' ),
+            'page',
+            'normal',
+            'high'
+        );
+
+        add_meta_box(
+            'developer_starter_seo',
+            'SEO设置',
+            array( $this, 'render_seo_meta_box' ),
+            array( 'post', 'page' ),
+            'normal',
+            'default'
+        );
+    }
+
+    public function render_modules_meta_box( $post ) {
+        wp_nonce_field( 'developer_starter_modules_nonce', 'modules_nonce' );
+        
+        $modules = get_post_meta( $post->ID, '_developer_starter_modules', true );
+        $modules = is_array( $modules ) ? $modules : array();
+        
+        $module_count = count( $modules );
+        ?>
+        <style>
+            #developer_starter_modules .inside { padding: 0; margin: 0; }
+            .dsm-wrap { background: #f0f0f1; }
+            .dsm-toolbar { 
+                display: flex; 
+                flex-wrap: wrap; 
+                gap: 8px; 
+                padding: 16px; 
+                background: #2271b1; 
+            }
+            .dsm-add-btn { 
+                padding: 10px 16px; 
+                background: rgba(255,255,255,0.2); 
+                color: #fff; 
+                border: 1px solid rgba(255,255,255,0.3); 
+                border-radius: 4px; 
+                cursor: pointer; 
+                font-size: 13px; 
+                transition: all 0.2s;
+            }
+            .dsm-add-btn:hover { 
+                background: rgba(255,255,255,0.3); 
+            }
+            .dsm-list { 
+                min-height: 60px; 
+                padding: 16px; 
+            }
+            .dsm-item { 
+                background: #fff; 
+                border: 1px solid #c3c4c7; 
+                margin-bottom: 8px; 
+                border-radius: 4px;
+            }
+            .dsm-item-header { 
+                display: flex; 
+                align-items: center; 
+                padding: 12px 16px; 
+                cursor: pointer; 
+                background: #fafafa;
+                border-bottom: 1px solid #eee;
+            }
+            .dsm-item-header:hover { background: #f0f0f1; }
+            .dsm-handle { margin-right: 12px; color: #787c82; cursor: move; font-size: 14px; }
+            .dsm-title { flex: 1; font-weight: 600; font-size: 14px; }
+            .dsm-toggle { margin-right: 12px; color: #787c82; }
+            .dsm-remove { color: #b32d2e; text-decoration: none; font-size: 16px; padding: 4px 8px; }
+            .dsm-remove:hover { background: #fee; border-radius: 3px; }
+            .dsm-content { padding: 16px; display: none; background: #fff; }
+            .dsm-item.open .dsm-content { display: block; }
+            .dsm-field { margin-bottom: 16px; }
+            .dsm-field label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; }
+            .dsm-field input[type=text], 
+            .dsm-field input[type=url], 
+            .dsm-field input[type=number], 
+            .dsm-field select, 
+            .dsm-field textarea { 
+                width: 100%; 
+                max-width: 500px; 
+                padding: 8px 10px;
+                border: 1px solid #8c8f94;
+                border-radius: 4px;
+            }
+            .dsm-repeater-list { margin-bottom: 12px; }
+            .dsm-repeater-item { 
+                background: #f6f7f7; 
+                border: 1px solid #c3c4c7; 
+                padding: 12px; 
+                margin-bottom: 8px; 
+                border-radius: 4px;
+                position: relative;
+            }
+            .dsm-repeater-remove { 
+                position: absolute; 
+                top: 8px; 
+                right: 8px; 
+                color: #b32d2e; 
+                text-decoration: none; 
+            }
+            .dsm-img-preview { max-width: 100px; margin-top: 8px; display: block; border-radius: 4px; }
+            .dsm-btn-add { 
+                background: #2271b1; 
+                color: #fff; 
+                border: none; 
+                padding: 8px 14px; 
+                border-radius: 4px; 
+                cursor: pointer;
+            }
+            .dsm-btn-add:hover { background: #135e96; }
+            .dsm-placeholder { 
+                height: 50px; 
+                background: #e8f0fe; 
+                border: 2px dashed #2271b1; 
+                margin-bottom: 8px;
+                border-radius: 4px;
+            }
+            @media (max-width: 782px) {
+                .dsm-toolbar { flex-direction: column; }
+                .dsm-add-btn { width: 100%; text-align: center; }
+            }
+        </style>
+
+        <div class="dsm-wrap">
+            <div class="dsm-toolbar">
+                <?php foreach ( $this->module_fields as $key => $config ) : ?>
+                    <button type="button" class="dsm-add-btn" data-type="<?php echo esc_attr( $key ); ?>">
+                        + <?php echo esc_html( $config['title'] ); ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+
+            <div class="dsm-list" id="dsm-list">
+                <?php
+                $idx = 0;
+                foreach ( $modules as $module ) :
+                    $type = isset( $module['type'] ) ? $module['type'] : '';
+                    $data = isset( $module['data'] ) ? $module['data'] : array();
+                    if ( isset( $this->module_fields[ $type ] ) ) :
+                        $this->render_item( $idx, $type, $data, false );
+                        $idx++;
+                    endif;
+                endforeach;
+                ?>
+            </div>
+        </div>
+
+        <div id="dsm-templates" style="display:none;">
+            <?php foreach ( $this->module_fields as $key => $config ) : ?>
+                <script type="text/template" data-type="<?php echo esc_attr( $key ); ?>">
+                    <?php $this->render_item( '__IDX__', $key, array(), true ); ?>
+                </script>
+            <?php endforeach; ?>
+        </div>
+
+        <script>
+        jQuery(document).ready(function($){
+            var idx = <?php echo $module_count; ?>;
+
+            // Add module
+            $(document).on('click', '.dsm-add-btn', function(e){
+                e.preventDefault();
+                var type = $(this).data('type');
+                var $tplScript = $('#dsm-templates script[data-type="' + type + '"]');
+                if(!$tplScript.length) return;
+                var tpl = $tplScript.html();
+                if(!tpl) return;
+                tpl = tpl.replace(/__IDX__/g, idx);
+                var $item = $(tpl);
+                $item.addClass('open');
+                $('#dsm-list').append($item);
+                idx++;
+            });
+
+            // Toggle module
+            $(document).on('click', '.dsm-item-header', function(e){
+                if($(e.target).closest('.dsm-remove').length) return;
+                $(this).closest('.dsm-item').toggleClass('open');
+            });
+
+            // Remove module
+            $(document).on('click', '.dsm-remove', function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                if(confirm('确定删除此模块吗？')){
+                    $(this).closest('.dsm-item').remove();
+                }
+            });
+
+            // Sortable
+            if($.fn.sortable) {
+                $('#dsm-list').sortable({
+                    handle: '.dsm-handle',
+                    placeholder: 'dsm-placeholder',
+                    tolerance: 'pointer'
+                });
+            }
+
+            // Image/File upload
+            $(document).on('click', '.dsm-upload', function(e){
+                e.preventDefault();
+                var $btn = $(this);
+                var $field = $btn.closest('.dsm-field');
+                var $inp = $field.find('.dsm-img-input');
+                var $prev = $field.find('.dsm-img-preview');
+                
+                if(typeof wp === 'undefined' || typeof wp.media === 'undefined') {
+                    alert('媒体库加载失败，请刷新页面重试');
+                    return;
+                }
+                
+                var frame = wp.media({
+                    title: '选择文件',
+                    multiple: false,
+                    library: {type: 'image'}
+                });
+                
+                frame.on('select', function(){
+                    var att = frame.state().get('selection').first().toJSON();
+                    $inp.val(att.url);
+                    if($prev.length){
+                        $prev.attr('src', att.url).show();
+                    } else {
+                        $btn.after('<img src="'+ att.url +'" class="dsm-img-preview" style="max-width:100px;margin-top:8px;display:block;border-radius:4px;"/>');
+                    }
+                });
+                
+                frame.open();
+            });
+
+            // Add repeater item
+            $(document).on('click', '.dsm-rep-add', function(){
+                var $wrap = $(this).parent();
+                var $list = $wrap.find('.dsm-repeater-list');
+                var $tpl = $wrap.find('.dsm-rep-tpl');
+                if(!$tpl.length) return;
+                var tpl = $tpl.attr('data-template') || $tpl.data('template');
+                if(!tpl) return;
+                var ridx = $list.children().length;
+                tpl = tpl.replace(/__RIDX__/g, ridx);
+                $list.append(tpl);
+            });
+
+            // Remove repeater item
+            $(document).on('click', '.dsm-repeater-remove', function(e){
+                e.preventDefault();
+                $(this).closest('.dsm-repeater-item').remove();
+            });
+        });
+        </script>
+        <?php
+    }
+
+    private function render_item( $idx, $type, $data, $use_defaults = false ) {
+        if ( ! isset( $this->module_fields[ $type ] ) ) return;
+        
+        $config = $this->module_fields[ $type ];
+        $fields = $config['fields'];
+        $title = $config['title'];
+        
+        if ( $use_defaults && empty( $data ) ) {
+            $data = $this->get_defaults( $type );
+        }
+        ?>
+        <div class="dsm-item" data-type="<?php echo esc_attr( $type ); ?>">
+            <div class="dsm-item-header">
+                <span class="dsm-handle">::</span>
+                <span class="dsm-title"><?php echo esc_html( $title ); ?></span>
+                <span class="dsm-toggle">v</span>
+                <a href="#" class="dsm-remove">x</a>
+            </div>
+            <div class="dsm-content">
+                <input type="hidden" name="modules[<?php echo $idx; ?>][type]" value="<?php echo esc_attr( $type ); ?>"/>
+                <?php foreach ( $fields as $field ) : ?>
+                    <?php $this->render_field( $idx, $field, $data ); ?>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <?php
+    }
+
+    private function get_defaults( $type ) {
+        $data = array();
+        if ( ! isset( $this->module_fields[ $type ] ) ) return $data;
+        
+        foreach ( $this->module_fields[ $type ]['fields'] as $field ) {
+            $fid = $field['id'];
+            if ( $field['type'] === 'repeater' && isset( $field['default_items'] ) ) {
+                $data[ $fid ] = $field['default_items'];
+            } elseif ( isset( $field['default'] ) ) {
+                $data[ $fid ] = $field['default'];
+            }
+        }
+        return $data;
+    }
+
+    private function render_field( $idx, $field, $data ) {
+        $fid = $field['id'];
+        $def = isset( $field['default'] ) ? $field['default'] : '';
+        $val = isset( $data[ $fid ] ) ? $data[ $fid ] : $def;
+        $name = "modules[{$idx}][data][{$fid}]";
+        ?>
+        <div class="dsm-field">
+            <label><?php echo esc_html( $field['label'] ); ?></label>
+            <?php
+            switch ( $field['type'] ) {
+                case 'textarea':
+                case 'editor':
+                    echo '<textarea name="' . esc_attr( $name ) . '" rows="3">' . esc_textarea( $val ) . '</textarea>';
+                    break;
+
+                case 'select':
+                    echo '<select name="' . esc_attr( $name ) . '">';
+                    foreach ( $field['options'] as $ov => $ol ) {
+                        echo '<option value="' . esc_attr( $ov ) . '"' . selected( $val, $ov, false ) . '>' . esc_html( $ol ) . '</option>';
+                    }
+                    echo '</select>';
+                    break;
+
+                case 'image':
+                case 'file':
+                    echo '<input type="text" name="' . esc_attr( $name ) . '" value="' . esc_attr( $val ) . '" class="dsm-img-input" placeholder="输入图片URL或点击选择" style="max-width:350px;"/>';
+                    echo '<button type="button" class="button dsm-upload" style="margin-left:8px;">选择</button>';
+                    if ( $val ) {
+                        echo '<img src="' . esc_url( $val ) . '" class="dsm-img-preview"/>';
+                    }
+                    break;
+
+                case 'number':
+                    echo '<input type="number" name="' . esc_attr( $name ) . '" value="' . esc_attr( $val ) . '"/>';
+                    break;
+
+                case 'repeater':
+                    $items = is_array( $val ) ? $val : array();
+                    $subs = isset( $field['fields'] ) ? $field['fields'] : array();
+                    
+                    // 修复：当 repeater 数据为空时，使用 default_items 初始化，确保演示数据在后台显示
+                    if ( empty( $items ) && isset( $field['default_items'] ) && is_array( $field['default_items'] ) ) {
+                        $items = $field['default_items'];
+                    }
+                    
+                    echo '<div class="dsm-repeater-list">';
+                    foreach ( $items as $ri => $item ) {
+                        echo '<div class="dsm-repeater-item">';
+                        echo '<a href="#" class="dsm-repeater-remove">x</a>';
+                        foreach ( $subs as $sf ) {
+                            $sv = isset( $item[ $sf['id'] ] ) ? $item[ $sf['id'] ] : '';
+                            $sn = "modules[{$idx}][data][{$fid}][{$ri}][{$sf['id']}]";
+                            echo '<div class="dsm-field"><label>' . esc_html( $sf['label'] ) . '</label>';
+                            if ( $sf['type'] === 'image' || $sf['type'] === 'file' ) {
+                                echo '<input type="text" name="' . esc_attr( $sn ) . '" value="' . esc_attr( $sv ) . '" class="dsm-img-input" placeholder="输入图片URL或点击选择" style="max-width:250px;"/>';
+                                echo '<button type="button" class="button dsm-upload" style="margin-left:8px;">选择</button>';
+                                if ( $sv ) echo '<img src="' . esc_url( $sv ) . '" class="dsm-img-preview"/>';
+                            } elseif ( $sf['type'] === 'textarea' ) {
+                                echo '<textarea name="' . esc_attr( $sn ) . '" rows="2">' . esc_textarea( $sv ) . '</textarea>';
+                            } else {
+                                echo '<input type="text" name="' . esc_attr( $sn ) . '" value="' . esc_attr( $sv ) . '"/>';
+                            }
+                            echo '</div>';
+                        }
+                        echo '</div>';
+                    }
+                    echo '</div>';
+                    
+                    // Use data attribute instead of nested script tag to avoid parsing issues
+                    $tpl_html = '<div class="dsm-repeater-item"><a href="#" class="dsm-repeater-remove">x</a>';
+                    foreach ( $subs as $sf ) {
+                        $sn = "modules[{$idx}][data][{$fid}][__RIDX__][{$sf['id']}]";
+                        $tpl_html .= '<div class="dsm-field"><label>' . esc_html( $sf['label'] ) . '</label>';
+                        if ( $sf['type'] === 'image' || $sf['type'] === 'file' ) {
+                            $tpl_html .= '<input type="text" name="' . esc_attr( $sn ) . '" value="" class="dsm-img-input" placeholder="输入图片URL或点击选择" style="max-width:250px;"/>';
+                            $tpl_html .= '<button type="button" class="button dsm-upload" style="margin-left:8px;">选择</button>';
+                        } elseif ( $sf['type'] === 'textarea' ) {
+                            $tpl_html .= '<textarea name="' . esc_attr( $sn ) . '" rows="2"></textarea>';
+                        } else {
+                            $tpl_html .= '<input type="text" name="' . esc_attr( $sn ) . '" value=""/>';
+                        }
+                        $tpl_html .= '</div>';
+                    }
+                    $tpl_html .= '</div>';
+                    echo '<div class="dsm-rep-tpl" data-template="' . esc_attr( $tpl_html ) . '" style="display:none;"></div>';
+                    echo '<button type="button" class="dsm-btn-add dsm-rep-add">+ 添加项目</button>';
+                    break;
+
+                default:
+                    // Always use text type to avoid HTML5 validation issues in templates
+                    echo '<input type="text" name="' . esc_attr( $name ) . '" value="' . esc_attr( $val ) . '"/>';
+            }
+            ?>
+        </div>
+        <?php
+    }
+
+    public function render_seo_meta_box( $post ) {
+        wp_nonce_field( 'developer_starter_seo_nonce', 'seo_nonce' );
+        $t = get_post_meta( $post->ID, '_developer_starter_seo_title', true );
+        $d = get_post_meta( $post->ID, '_developer_starter_seo_description', true );
+        $k = get_post_meta( $post->ID, '_developer_starter_seo_keywords', true );
+        ?>
+        <p><label><strong>SEO标题</strong></label><br><input type="text" name="seo_title" value="<?php echo esc_attr( $t ); ?>" class="large-text"/></p>
+        <p><label><strong>SEO描述</strong></label><br><textarea name="seo_description" rows="2" class="large-text"><?php echo esc_textarea( $d ); ?></textarea></p>
+        <p><label><strong>SEO关键词</strong></label><br><input type="text" name="seo_keywords" value="<?php echo esc_attr( $k ); ?>" class="large-text"/></p>
+        <?php
+    }
+
+    public function save_meta_boxes( $post_id ) {
+        if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+        if ( ! current_user_can( 'edit_post', $post_id ) ) return;
+
+        if ( isset( $_POST['modules_nonce'] ) && wp_verify_nonce( $_POST['modules_nonce'], 'developer_starter_modules_nonce' ) ) {
+            $modules = array();
+            if ( isset( $_POST['modules'] ) && is_array( $_POST['modules'] ) ) {
+                foreach ( $_POST['modules'] as $m ) {
+                    $modules[] = array(
+                        'type' => isset( $m['type'] ) ? sanitize_text_field( $m['type'] ) : '',
+                        'data' => isset( $m['data'] ) ? $this->sanitize_data( $m['data'] ) : array(),
+                    );
+                }
+            }
+            update_post_meta( $post_id, '_developer_starter_modules', $modules );
+        }
+
+        if ( isset( $_POST['seo_nonce'] ) && wp_verify_nonce( $_POST['seo_nonce'], 'developer_starter_seo_nonce' ) ) {
+            $seo_title = isset( $_POST['seo_title'] ) ? sanitize_text_field( $_POST['seo_title'] ) : '';
+            $seo_desc = isset( $_POST['seo_description'] ) ? sanitize_textarea_field( $_POST['seo_description'] ) : '';
+            $seo_keywords = isset( $_POST['seo_keywords'] ) ? sanitize_text_field( $_POST['seo_keywords'] ) : '';
+            update_post_meta( $post_id, '_developer_starter_seo_title', $seo_title );
+            update_post_meta( $post_id, '_developer_starter_seo_description', $seo_desc );
+            update_post_meta( $post_id, '_developer_starter_seo_keywords', $seo_keywords );
+        }
+    }
+
+    private function sanitize_data( $data ) {
+        $out = array();
+        if ( ! is_array( $data ) ) return $out;
+        foreach ( $data as $k => $v ) {
+            if ( is_array( $v ) ) {
+                $out[ $k ] = $this->sanitize_data( $v );
+            } else {
+                // 判断字段类型时使用更精确的匹配
+                // 检查是否是内容/描述类字段
+                if ( strpos( $k, 'content' ) !== false || strpos( $k, 'desc' ) !== false || strpos( $k, 'answer' ) !== false ) {
+                    $out[ $k ] = wp_kses_post( $v );
+                // 检查是否是纯图片字段（字段名以_image结尾或等于image/logo/file）
+                } elseif ( preg_match( '/(_image|_logo|_file|_qrcode)$/', $k ) || $k === 'image' || $k === 'logo' || $k === 'file' || $k === 'avatar' ) {
+                    $out[ $k ] = esc_url_raw( $v );
+                // 检查是否是图标字段 - 允许iconfont/FontAwesome等图标HTML
+                } elseif ( $k === 'icon' ) {
+                    // 检测是否包含HTML标签
+                    if ( preg_match( '/<[^>]+>/', $v ) ) {
+                        // 允许 <i>, <span>, <svg>, <path> 等图标相关标签
+                        $allowed = array(
+                            'i' => array( 
+                                'class' => true, 
+                                'style' => true,
+                                'aria-hidden' => true,
+                            ),
+                            'span' => array( 
+                                'class' => true, 
+                                'style' => true,
+                            ),
+                            'svg' => array( 
+                                'class' => true, 
+                                'width' => true, 
+                                'height' => true, 
+                                'viewBox' => true,
+                                'viewbox' => true, 
+                                'fill' => true, 
+                                'xmlns' => true,
+                            ),
+                            'path' => array( 
+                                'd' => true, 
+                                'fill' => true,
+                            ),
+                            'use' => array( 
+                                'xlink:href' => true, 
+                                'href' => true,
+                            ),
+                        );
+                        $out[ $k ] = wp_kses( $v, $allowed );
+                    } else {
+                        // 非HTML内容直接保存（比如emoji或纯class名）
+                        $out[ $k ] = sanitize_text_field( $v );
+                    }
+                // 其他所有字段都作为普通文本处理
+                } else {
+                    $out[ $k ] = sanitize_text_field( $v );
+                }
+            }
+        }
+        return $out;
+    }
+}

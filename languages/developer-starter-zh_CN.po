@@ -1,0 +1,222 @@
+# Qi Ling Theme Chinese Translation
+# Copyright (C) 2024
+# This file is distributed under the GNU General Public License v2.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Qi Ling Theme 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-12-29 02:59+0800\n"
+"Last-Translator: \n"
+"Language-Team: Chinese (China)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.8\n"
+
+msgid "企业主题设置"
+msgstr "企业主题设置"
+
+msgid "基础设置"
+msgstr "基础设置"
+
+msgid "模块管理"
+msgstr "模块管理"
+
+msgid "网站 Logo"
+msgstr "网站 Logo"
+
+msgid "企业名称"
+msgstr "企业名称"
+
+msgid "联系电话"
+msgstr "联系电话"
+
+msgid "联系邮箱"
+msgstr "联系邮箱"
+
+msgid "企业地址"
+msgstr "企业地址"
+
+msgid "备案信息"
+msgstr "备案信息"
+
+msgid "ICP 备案号"
+msgstr "ICP 备案号"
+
+msgid "公安备案号"
+msgstr "公安备案号"
+
+msgid "公安备案图标"
+msgstr "公安备案图标"
+
+msgid "右侧浮动栏"
+msgstr "右侧浮动栏"
+
+msgid "悬浮电话"
+msgstr "悬浮电话"
+
+msgid "悬浮QQ"
+msgstr "悬浮QQ"
+
+msgid "悬浮微信二维码"
+msgstr "悬浮微信二维码"
+
+msgid "自定义悬浮文字"
+msgstr "自定义悬浮文字"
+
+msgid "自定义悬浮链接"
+msgstr "自定义悬浮链接"
+
+msgid "社交媒体"
+msgstr "社交媒体"
+
+msgid "微信公众号二维码"
+msgstr "微信公众号二维码"
+
+msgid "微博链接"
+msgstr "微博链接"
+
+msgid "页脚设置"
+msgstr "页脚设置"
+
+msgid "版权信息（支持HTML）"
+msgstr "版权信息（支持HTML）"
+
+msgid "公司简介"
+msgstr "公司简介"
+
+msgid "关于我们标题"
+msgstr "关于我们标题"
+
+msgid "快速链接标题"
+msgstr "快速链接标题"
+
+msgid "联系方式标题"
+msgstr "联系方式标题"
+
+msgid "关注我们标题"
+msgstr "关注我们标题"
+
+msgid "SEO 设置"
+msgstr "SEO 设置"
+
+msgid "默认标题"
+msgstr "默认标题"
+
+msgid "默认描述"
+msgstr "默认描述"
+
+msgid "默认关键词"
+msgstr "默认关键词"
+
+msgid "高级设置"
+msgstr "高级设置"
+
+msgid "主色调"
+msgstr "主色调"
+
+msgid "百度统计代码/ID"
+msgstr "百度统计代码/ID"
+
+msgid "自定义 CSS"
+msgstr "自定义 CSS"
+
+msgid "自定义 JS"
+msgstr "自定义 JS"
+
+msgid "选择图片"
+msgstr "选择图片"
+
+msgid "移除"
+msgstr "移除"
+
+msgid "主导航菜单"
+msgstr "主导航菜单"
+
+msgid "顶部导航菜单"
+msgstr "顶部导航菜单"
+
+msgid "页脚导航菜单"
+msgstr "页脚导航菜单"
+
+msgid "移动端导航菜单"
+msgstr "移动端导航菜单"
+
+msgid "社交媒体菜单"
+msgstr "社交媒体菜单"
+
+msgid "主侧边栏"
+msgstr "主侧边栏"
+
+msgid "在页面侧边栏显示的小工具"
+msgstr "在页面侧边栏显示的小工具"
+
+msgid "页脚区域 %d"
+msgstr "页脚区域 %d"
+
+msgid "页脚第 %d 列小工具"
+msgstr "页脚第 %d 列小工具"
+
+msgid "商店侧边栏"
+msgstr "商店侧边栏"
+
+msgid "商店页面侧边栏小工具"
+msgstr "商店页面侧边栏小工具"
+
+msgid "阅读更多"
+msgstr "阅读更多"
+
+msgid "搜索结果"
+msgstr "搜索结果"
+
+msgid "未找到结果"
+msgstr "未找到结果"
+
+msgid "返回首页"
+msgstr "返回首页"
+
+msgid "电话"
+msgstr "电话"
+
+msgid "邮箱"
+msgstr "邮箱"
+
+msgid "地址"
+msgstr "地址"
+
+msgid "QQ咨询"
+msgstr "QQ咨询"
+
+msgid "提交留言"
+msgstr "提交留言"
+
+msgid "您的姓名 *"
+msgstr "您的姓名 *"
+
+msgid "联系电话 *"
+msgstr "联系电话 *"
+
+msgid "电子邮箱"
+msgstr "电子邮箱"
+
+msgid "您的留言内容..."
+msgstr "您的留言内容..."
+
+msgid "联系我们"
+msgstr "联系我们"
+
+msgid "图文组合布局"
+msgstr "图文组合布局"
+
+msgid "图文模块"
+msgstr "图文模块"
+
+msgid "多列布局模块"
+msgstr "多列布局模块"
+
+msgid "多列布局"
+msgstr "多列布局"

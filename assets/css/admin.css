@@ -1,0 +1,115 @@
+/**
+ * Qi Ling Theme - Admin Styles
+ *
+ * @package Developer_Starter
+ * @since 1.0.0
+ */
+
+/* Settings Page */
+.wrap h1 {
+    margin-bottom: 20px;
+}
+
+/* Modules Builder */
+.developer-starter-modules-builder {
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+}
+
+.available-modules {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.available-modules h4,
+.active-modules h4 {
+    margin-bottom: 10px;
+}
+
+.available-modules .button {
+    margin: 3px;
+}
+
+.modules-list {
+    min-height: 100px;
+    background: #f6f7f7;
+    border: 2px dashed #c3c4c7;
+    padding: 10px;
+}
+
+.module-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+}
+
+.module-handle {
+    cursor: move;
+    margin-right: 10px;
+    color: #999;
+}
+
+.module-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.remove-module {
+    color: #a00;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.remove-module:hover {
+    color: #dc3232;
+}
+
+/* Image Preview */
+.image-preview {
+    max-width: 150px;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+
+/* Color Picker */
+.wp-picker-container {
+    display: inline-block;
+}
+
+/* Form Table Enhancements */
+.form-table th {
+    width: 200px;
+    padding-right: 10px;
+}
+
+.form-table textarea.large-text {
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Sections */
+.settings-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 15px 0 10px;
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+/* Tabs (for future use) */
+.nav-tab-wrapper {
+    margin-bottom: 20px;
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+    .form-table th {
+        width: auto;
+    }
+}
