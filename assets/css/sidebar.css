@@ -1,0 +1,323 @@
+/**
+ * 侧边栏样式
+ *
+ * @package Developer_Starter
+ */
+
+/* ========================================
+   布局容器
+======================================== */
+.page-layout,
+.post-layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.page-layout.no-sidebar,
+.post-layout.no-sidebar {
+    justify-content: center;
+}
+
+.page-layout.no-sidebar .page-main-content,
+.post-layout.no-sidebar .post-main-content {
+    max-width: 900px;
+    width: 100%;
+}
+
+.page-layout.has-sidebar .page-main-content,
+.post-layout.has-sidebar .post-main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.page-sidebar,
+.post-sidebar {
+    width: 320px;
+    flex-shrink: 0;
+}
+
+/* ========================================
+   侧边栏基础样式
+======================================== */
+.sidebar {
+    position: sticky;
+    top: 100px;
+}
+
+.widget {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--color-gray-100);
+}
+
+.widget:last-child {
+    margin-bottom: 0;
+}
+
+.widget-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-gray-900);
+    margin: 0 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--color-primary);
+    position: relative;
+}
+
+/* ========================================
+   列表型小工具
+======================================== */
+.widget ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.widget ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-gray-100);
+}
+
+.widget ul li:first-child {
+    padding-top: 0;
+}
+
+.widget ul li:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.widget ul li a {
+    color: var(--color-gray-700);
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: color 0.2s ease;
+}
+
+.widget ul li a:hover {
+    color: var(--color-primary);
+}
+
+/* 文章数量标签 */
+.widget ul li a .post-count,
+.widget ul li span.count {
+    background: var(--color-gray-100);
+    color: var(--color-gray-600);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* ========================================
+   搜索小工具
+======================================== */
+.widget_search .search-form {
+    display: flex;
+    gap: 8px;
+}
+
+.widget_search .search-field {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--color-gray-200);
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.widget_search .search-field:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+}
+
+.widget_search .search-submit {
+    padding: 12px 20px;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.widget_search .search-submit:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+}
+
+/* ========================================
+   最近文章小工具
+======================================== */
+.widget_recent_entries ul li {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.widget_recent_entries ul li a {
+    display: block;
+    font-weight: 500;
+}
+
+.widget_recent_entries .post-date {
+    font-size: 0.8125rem;
+    color: var(--color-gray-500);
+}
+
+/* ========================================
+   分类小工具
+======================================== */
+.widget_categories ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.widget_categories ul li a {
+    flex: 1;
+}
+
+/* ========================================
+   标签云小工具
+======================================== */
+.widget_tag_cloud .tagcloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.widget_tag_cloud .tagcloud a {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--color-gray-100);
+    color: var(--color-gray-700);
+    border-radius: 20px;
+    font-size: 0.8125rem !important;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.widget_tag_cloud .tagcloud a:hover {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+/* ========================================
+   日历小工具
+======================================== */
+.widget_calendar table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.widget_calendar caption {
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.widget_calendar th,
+.widget_calendar td {
+    text-align: center;
+    padding: 8px;
+}
+
+.widget_calendar th {
+    font-weight: 600;
+    color: var(--color-gray-600);
+    font-size: 0.8125rem;
+}
+
+.widget_calendar td a {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    background: var(--color-primary);
+    color: #fff;
+    border-radius: 50%;
+    text-decoration: none;
+}
+
+.widget_calendar #today {
+    background: var(--color-gray-100);
+    border-radius: 50%;
+}
+
+/* ========================================
+   文本小工具
+======================================== */
+.widget_text .textwidget {
+    line-height: 1.7;
+    color: var(--color-gray-600);
+}
+
+.widget_text .textwidget a {
+    color: var(--color-primary);
+}
+
+.widget_text .textwidget img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* ========================================
+   自定义 HTML 小工具
+======================================== */
+.widget_custom_html img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* ========================================
+   全屏页面样式
+======================================== */
+.fullwidth-page .fullwidth-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* ========================================
+   响应式设计
+======================================== */
+@media (max-width: 1024px) {
+
+    .page-layout,
+    .post-layout {
+        flex-direction: column;
+    }
+
+    .page-sidebar,
+    .post-sidebar {
+        width: 100%;
+    }
+
+    .sidebar {
+        position: static;
+    }
+
+    .page-layout.has-sidebar .page-main-content,
+    .post-layout.has-sidebar .post-main-content {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .widget {
+        padding: 20px;
+    }
+
+    .widget-title {
+        font-size: 1rem;
+    }
+}

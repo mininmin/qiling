@@ -5,6 +5,189 @@
 document.addEventListener('DOMContentLoaded', function () {
     'use strict';
 
+    // ===== User Auth Status Check (Cache-Safe) =====
+    // 确保已登录用户不受页面缓存影响，始终显示正确的登录状态
+    (function checkUserAuthStatus() {
+        var authWrapper = document.getElementById('header-auth-wrapper');
+        if (!authWrapper) return;
+
+        var loginArea = document.getElementById('header-login-area');
+        var userArea = document.getElementById('header-user-area');
+
+        if (!loginArea || !userArea) return;
+
+        // 通过AJAX获取真实的用户登录状态（不受页面缓存影响）
+        var ajaxUrl = typeof developerStarterData !== 'undefined' ? developerStarterData.ajaxUrl : '/wp-admin/admin-ajax.php';
+
+        // 添加时间戳防止CDN和浏览器缓存
+        var timestamp = new Date().getTime();
+
+        fetch(ajaxUrl + '?_=' + timestamp, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache'
+            },
+            body: 'action=developer_starter_user_status&_nocache=' + timestamp,
+            credentials: 'same-origin', // 确保发送cookies
+            cache: 'no-store' // 强制不使用缓存
+        })
+            .then(function (response) { return response.json(); })
+            .then(function (data) {
+                if (!data.success) return;
+
+                var userData = data.data;
+
+                if (userData.logged_in) {
+                    // 用户已登录：显示用户菜单，隐藏登录按钮
+                    loginArea.style.display = 'none';
+                    userArea.style.display = '';
+
+                    // 更新用户信息（如果是从缓存页面加载的）
+                    var userAvatar = document.getElementById('header-user-avatar');
+                    var dropdownAvatar = document.getElementById('dropdown-user-avatar');
+                    var userName = document.getElementById('dropdown-user-name');
+                    var userEmail = document.getElementById('dropdown-user-email');
+                    var accountLink = document.getElementById('dropdown-account-link');
+                    var adminLink = document.getElementById('dropdown-admin-link');
+                    var logoutLink = document.getElementById('dropdown-logout-link');
+                    var userToggle = document.getElementById('header-user-toggle');
+
+                    // 更新头像 - 查找所有可能的头像元素
+                    if (userAvatar) {
+                        userAvatar.src = userData.avatar_32;
+                        userAvatar.alt = userData.display_name;
+                    }
+                    if (dropdownAvatar) {
+                        dropdownAvatar.src = userData.avatar_48;
+                        dropdownAvatar.alt = userData.display_name;
+                    }
+
+                    // 更新主按钮的头像（查找任何空src或没有正确src的img）
+                    if (userToggle) {
+                        var toggleImgs = userToggle.querySelectorAll('img');
+                        toggleImgs.forEach(function (img) {
+                            if (!img.src || img.src === '' || img.src === window.location.href) {
+                                img.src = userData.avatar_32;
+                                img.alt = userData.display_name;
+                            }
+                        });
+                    }
+
+                    // 更新下拉菜单中的头像
+                    var dropdown = document.getElementById('user-dropdown');
+                    if (dropdown) {
+                        var dropdownImgs = dropdown.querySelectorAll('.dropdown-header img');
+                        dropdownImgs.forEach(function (img) {
+                            if (!img.src || img.src === '' || img.src === window.location.href) {
+                                img.src = userData.avatar_48;
+                                img.alt = userData.display_name;
+                            }
+                        });
+                    }
+
+                    // 更新用户名和邮箱（强制更新，不检查是否为空）
+                    if (userName) userName.textContent = userData.display_name;
+                    if (userEmail) userEmail.textContent = userData.email;
+
+                    // 更新链接
+                    if (accountLink && userData.account_url) accountLink.href = userData.account_url;
+                    if (userToggle && userData.account_url) userToggle.href = userData.account_url;
+                    if (adminLink) {
+                        if (userData.can_access_admin && userData.admin_url) {
+                            adminLink.href = userData.admin_url;
+                            adminLink.style.display = '';
+                        } else {
+                            adminLink.style.display = 'none';
+                        }
+                    }
+                    if (logoutLink && userData.logout_url) logoutLink.href = userData.logout_url;
+
+                } else {
+                    // 用户未登录：显示登录按钮，隐藏用户菜单
+                    loginArea.style.display = '';
+                    userArea.style.display = 'none';
+                }
+
+                // 标记状态检查完成
+                authWrapper.setAttribute('data-auth-ready', 'true');
+            })
+            .catch(function (error) {
+                // 网络错误时保持服务器端渲染的状态
+                console.warn('User status check failed:', error);
+                authWrapper.setAttribute('data-auth-ready', 'true');
+            });
+    })();
+
+
+    // ===== Dark Mode Toggle =====
+    var darkModeToggle = document.getElementById('darkmode-toggle');
+    if (darkModeToggle) {
+        var iconSun = darkModeToggle.querySelector('.icon-sun');
+        var iconMoon = darkModeToggle.querySelector('.icon-moon');
+
+        // 检查本地存储或系统偏好
+        var savedTheme = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        function setDarkMode(isDark) {
+            if (isDark) {
+                document.documentElement.classList.add('dark-mode');
+                if (iconSun) iconSun.style.display = 'none';
+                if (iconMoon) iconMoon.style.display = 'block';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark-mode');
+                if (iconSun) iconSun.style.display = 'block';
+                if (iconMoon) iconMoon.style.display = 'none';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // 初始化
+        if (savedTheme === 'dark' || (savedTheme === null && prefersDark)) {
+            setDarkMode(true);
+        }
+
+        // 切换事件
+        darkModeToggle.addEventListener('click', function () {
+            var isDark = document.documentElement.classList.contains('dark-mode');
+            setDarkMode(!isDark);
+        });
+    }
+
+    // ===== Native Scroll Animation (替代 AOS 库) =====
+    if ('IntersectionObserver' in window) {
+        var aosElements = document.querySelectorAll('[data-aos]');
+        if (aosElements.length > 0) {
+            var aosObserver = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        var el = entry.target;
+                        var delay = parseInt(el.getAttribute('data-aos-delay')) || 0;
+
+                        setTimeout(function () {
+                            el.classList.add('aos-animate');
+                        }, delay);
+
+                        aosObserver.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            aosElements.forEach(function (el) {
+                el.classList.add('aos-init');
+                aosObserver.observe(el);
+            });
+        }
+    } else {
+        // 不支持 IntersectionObserver 的浏览器，直接显示所有元素
+        document.querySelectorAll('[data-aos]').forEach(function (el) {
+            el.classList.add('aos-animate');
+        });
+    }
+
     // ===== Initialize Swiper =====
     if (typeof Swiper !== 'undefined') {
         var bannerSwipers = document.querySelectorAll('.banner-swiper');
@@ -170,17 +353,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ===== Float Widget Hover =====
-    document.querySelectorAll('.float-widget').forEach(function (widget) {
-        widget.addEventListener('mouseenter', function () {
-            var popup = this.querySelector('.widget-popup');
-            if (popup) popup.style.display = 'block';
-        });
-        widget.addEventListener('mouseleave', function () {
-            var popup = this.querySelector('.widget-popup');
-            if (popup) popup.style.display = 'none';
-        });
-    });
+    // Float widget hover is now handled by CSS
 
     // ===== Contact Form =====
     var contactForm = document.getElementById('contact-form');
@@ -226,6 +399,78 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Invalid selector
             }
         });
+    });
+
+    // ===== Language Switcher Modal =====
+    function openTranslateModal() {
+        var modal = document.getElementById('translate-modal');
+        var overlay = document.getElementById('translate-modal-overlay');
+        if (modal && overlay) {
+            modal.classList.add('show');
+            overlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeTranslateModal() {
+        var modal = document.getElementById('translate-modal');
+        var overlay = document.getElementById('translate-modal-overlay');
+        if (modal && overlay) {
+            modal.classList.remove('show');
+            overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    }
+
+    // Toggle button click - use event delegation
+    document.addEventListener('click', function (e) {
+        // Open modal
+        if (e.target.closest('#translate-toggle')) {
+            e.stopPropagation();
+            openTranslateModal();
+            return;
+        }
+
+        // Close button
+        if (e.target.closest('#translate-modal-close')) {
+            closeTranslateModal();
+            return;
+        }
+
+        // Overlay click
+        if (e.target.id === 'translate-modal-overlay') {
+            closeTranslateModal();
+            return;
+        }
+
+        // Language item click
+        var langItem = e.target.closest('.translate-lang-item');
+        if (langItem) {
+            e.preventDefault();
+            var lang = langItem.getAttribute('data-lang');
+
+            // Call translate.js to change language
+            if (typeof translate !== 'undefined' && translate.changeLanguage) {
+                translate.changeLanguage(lang);
+            }
+
+            // Update active state
+            document.querySelectorAll('.translate-lang-item').forEach(function (opt) {
+                opt.classList.remove('active');
+            });
+            langItem.classList.add('active');
+
+            // Close modal
+            closeTranslateModal();
+        }
+    });
+
+    // ESC key to close modal
+    document.addEventListener('keydown', function (e) {
+        var modal = document.getElementById('translate-modal');
+        if (e.key === 'Escape' && modal && modal.classList.contains('show')) {
+            closeTranslateModal();
+        }
     });
 
 });

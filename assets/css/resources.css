@@ -1,0 +1,310 @@
+/**
+ * 资源下载页面专用样式
+ *
+ * @package Developer_Starter
+ * @since 1.0.0
+ */
+
+/* ========================================
+   资源下载页面 - 头部区域
+   ======================================== */
+.template-resources .page-header {
+    position: relative;
+    overflow: hidden;
+}
+
+.template-resources .page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+}
+
+.template-resources .page-header .page-title {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   下载模块增强样式
+   ======================================== */
+.template-resources .module-downloads {
+    position: relative;
+}
+
+.template-resources .module-downloads:nth-child(odd) {
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.template-resources .module-downloads .section-header {
+    position: relative;
+}
+
+.template-resources .module-downloads .section-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.template-resources .module-downloads .section-subtitle {
+    color: #64748b;
+    margin-top: 8px;
+}
+
+/* 下载卡片增强 */
+.template-resources .module-downloads .download-item {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.template-resources .module-downloads .download-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 0;
+    background: linear-gradient(180deg, #2563eb 0%, #7c3aed 100%);
+    transition: height 0.3s ease;
+}
+
+.template-resources .module-downloads .download-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-color: #c7d2fe;
+}
+
+.template-resources .module-downloads .download-item:hover::before {
+    height: 100%;
+}
+
+/* 下载按钮增强 */
+.template-resources .module-downloads .download-item .btn-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    border: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.template-resources .module-downloads .download-item .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.template-resources .module-downloads .download-item:hover .btn-primary::before {
+    left: 100%;
+}
+
+.template-resources .module-downloads .download-item .btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+}
+
+/* ========================================
+   文件类型标签样式
+   ======================================== */
+.template-resources .module-downloads .download-item span[style*="background: #e0e7ff"] {
+    animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+@keyframes pulse-subtle {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* ========================================
+   FAQ模块增强
+   ======================================== */
+.template-resources .module-faq {
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.template-resources .module-faq .faq-item {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+}
+
+.template-resources .module-faq .faq-item:hover {
+    background: #f8fafc;
+}
+
+/* ========================================
+   CTA模块增强
+   ======================================== */
+.template-resources .module-cta {
+    position: relative;
+    overflow: hidden;
+}
+
+.template-resources .module-cta::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: float-slow 6s ease-in-out infinite;
+}
+
+.template-resources .module-cta::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -5%;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    animation: float-slow 6s ease-in-out infinite 3s;
+}
+
+@keyframes float-slow {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: translateY(-20px) scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+/* ========================================
+   分类图标动画
+   ======================================== */
+.template-resources .module-downloads .download-item span[style*="font-size: 2rem"] {
+    transition: transform 0.3s ease;
+}
+
+.template-resources .module-downloads .download-item:hover span[style*="font-size: 2rem"] {
+    transform: scale(1.2) rotate(5deg);
+}
+
+/* ========================================
+   Banner模块增强（如果页面使用了Banner）
+   ======================================== */
+.template-resources .module-banner {
+    position: relative;
+}
+
+.template-resources .module-banner::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(to top, rgba(248, 250, 252, 1), transparent);
+    pointer-events: none;
+}
+
+/* ========================================
+   动画效果
+   ======================================== */
+.template-resources [data-aos] {
+    transition-duration: 0.8s !important;
+}
+
+/* ========================================
+   响应式适配
+   ======================================== */
+@media (max-width: 991px) {
+    .template-resources .page-header .page-title {
+        font-size: 2rem;
+    }
+
+    .template-resources .module-downloads .downloads-list {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .template-resources .page-header .page-title {
+        font-size: 1.75rem;
+    }
+
+    .template-resources .page-header {
+        padding: 80px 0 40px !important;
+    }
+
+    .template-resources .module-downloads .download-item {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+    .template-resources .module-downloads .download-item .btn-primary,
+    .template-resources .module-downloads .download-item span[style*="暂无文件"] {
+        margin-left: 0 !important;
+        margin-top: 15px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .template-resources .module-downloads .download-item:hover {
+        transform: none;
+    }
+
+    .template-resources .module-cta::before,
+    .template-resources .module-cta::after {
+        display: none;
+    }
+}
+
+/* ========================================
+   暗色模式适配
+   ======================================== */
+.dark-mode .template-resources .module-downloads .download-item {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+.dark-mode .template-resources .module-downloads .download-item:hover {
+    border-color: #6366f1;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .template-resources .module-downloads .section-title {
+    color: #f1f5f9;
+}
+
+.dark-mode .template-resources .module-downloads .section-subtitle {
+    color: #94a3b8;
+}
+
+.dark-mode .template-resources .module-downloads:nth-child(odd) {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+}
+
+.dark-mode .template-resources .module-faq {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+}
+
+.dark-mode .template-resources .module-faq .faq-item:hover {
+    background: #334155;
+}

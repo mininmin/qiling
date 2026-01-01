@@ -1,0 +1,470 @@
+/**
+ * Article Enhancement Styles
+ * 文章增强样式 - TOC、作者卡片、版权信息等
+ *
+ * @package Developer_Starter
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   Post Main Content Wrapper - 正文区域样式
+   ========================================================================== */
+
+.post-main-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+}
+
+[data-theme="dark"] .post-main-content {
+    background: var(--dark-bg-secondary, #1e293b);
+    border-color: var(--dark-border, #334155);
+}
+
+/* ==========================================================================
+   Content Style Variables (applied via inline style)
+   ========================================================================== */
+
+.entry-content {
+    max-width: var(--post-content-width, 800px);
+    font-size: var(--post-font-size, 18px);
+    line-height: var(--post-line-height, 1.8);
+    margin: 0 auto;
+}
+
+.entry-content p {
+    margin-bottom: var(--post-paragraph-spacing, 1.5em);
+}
+
+.entry-content img {
+    max-width: var(--post-image-max-width, 100%);
+    height: auto;
+    display: block;
+    margin: 1.5em auto;
+    border-radius: 8px;
+}
+
+/* ==========================================================================
+   Article Meta Stats
+   ========================================================================== */
+
+.post-meta-stats {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.meta-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.meta-stat svg {
+    width: 14px;
+    height: 14px;
+    opacity: 0.8;
+}
+
+/* ==========================================================================
+   Table of Contents (TOC)
+   ========================================================================== */
+
+.article-toc {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+}
+
+/* Sidebar position */
+.toc-sidebar .article-toc {
+    position: sticky;
+    top: 100px;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+}
+
+/* Before content position */
+.toc-before-content .article-toc {
+    margin-bottom: 40px;
+    max-width: 100%;
+}
+
+.toc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.toc-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.toc-toggle {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: #64748b;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.toc-toggle:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+.toc-toggle.collapsed svg {
+    transform: rotate(-90deg);
+}
+
+.toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.article-toc.collapsed .toc-list {
+    display: none;
+}
+
+.toc-item {
+    margin-bottom: 8px;
+}
+
+.toc-item.toc-level-2 {
+    padding-left: 0;
+}
+
+.toc-item.toc-level-3 {
+    padding-left: 16px;
+}
+
+.toc-item.toc-level-4 {
+    padding-left: 32px;
+}
+
+.toc-link {
+    display: block;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    color: #475569;
+    text-decoration: none;
+    border-radius: 6px;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.toc-link:hover {
+    background: #f8fafc;
+    color: var(--color-primary, #2563eb);
+    border-left-color: var(--color-primary, #2563eb);
+}
+
+.toc-link.active {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+    color: var(--color-primary, #2563eb);
+    border-left-color: var(--color-primary, #2563eb);
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   Author Box
+   ========================================================================== */
+
+.author-box {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 16px;
+    margin: 40px 0;
+}
+
+.author-avatar img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.author-info {
+    flex: 1;
+}
+
+.author-name {
+    margin: 0 0 8px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.author-bio {
+    margin: 0 0 12px;
+    font-size: 0.95rem;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.author-social {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: #fff;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #475569;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+    cursor: pointer;
+    position: relative;
+}
+
+.social-link svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.social-link .social-label {
+    font-size: 0.85rem;
+}
+
+.social-link:hover {
+    background: var(--color-primary, #2563eb);
+    color: #fff;
+    border-color: var(--color-primary, #2563eb);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.social-link:hover svg {
+    fill: #fff;
+    stroke: #fff;
+}
+
+/* WeChat QR Code Popup */
+.social-wechat-qr {
+    position: relative;
+}
+
+.social-wechat-qr .wechat-qr-popup {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    padding: 12px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.social-wechat-qr .wechat-qr-popup::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-top-color: #fff;
+}
+
+.social-wechat-qr .wechat-qr-popup img {
+    width: 140px;
+    height: 140px;
+    border-radius: 8px;
+    display: block;
+}
+
+.social-wechat-qr:hover .wechat-qr-popup {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================================================
+   Copyright Box
+   ========================================================================== */
+
+.post-copyright {
+    display: flex;
+    gap: 16px;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border-radius: 12px;
+    margin: 40px 0;
+    color: #fff;
+}
+
+.copyright-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+}
+
+.copyright-icon svg {
+    stroke: #fff;
+    opacity: 0.9;
+}
+
+.copyright-content {
+    flex: 1;
+}
+
+.copyright-text {
+    margin: 0 0 8px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.copyright-text strong {
+    color: #fff;
+}
+
+.copyright-notice {
+    margin: 0;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================================================
+   Code Blocks Enhancement
+   ========================================================================== */
+
+.entry-content pre {
+    margin: 1.5em 0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.entry-content pre code {
+    font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+    font-size: 0.9em;
+}
+
+/* Dark theme for code */
+.entry-content pre[class*="language-"] {
+    background: #1e293b;
+}
+
+/* ==========================================================================
+   Dark Mode
+   ========================================================================== */
+
+[data-theme="dark"] .article-toc {
+    background: var(--dark-bg-secondary, #1e293b);
+    border-color: var(--dark-border, #334155);
+}
+
+[data-theme="dark"] .toc-header {
+    border-color: #334155;
+}
+
+[data-theme="dark"] .toc-title {
+    color: #f1f5f9;
+}
+
+[data-theme="dark"] .toc-link {
+    color: #94a3b8;
+}
+
+[data-theme="dark"] .toc-link:hover {
+    background: #334155;
+    color: var(--color-primary-light, #60a5fa);
+}
+
+[data-theme="dark"] .toc-link.active {
+    background: rgba(37, 99, 235, 0.2);
+    color: var(--color-primary-light, #60a5fa);
+}
+
+[data-theme="dark"] .author-box {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+[data-theme="dark"] .author-name {
+    color: #f1f5f9;
+}
+
+[data-theme="dark"] .author-bio {
+    color: #94a3b8;
+}
+
+[data-theme="dark"] .social-link {
+    background: #334155;
+    color: #94a3b8;
+}
+
+[data-theme="dark"] .social-link:hover {
+    background: var(--color-primary, #2563eb);
+    color: #fff;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+    .toc-sidebar .article-toc {
+        position: static;
+        max-height: none;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .author-box {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .author-social {
+        justify-content: center;
+    }
+
+    .post-copyright {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .entry-content {
+        font-size: calc(var(--post-font-size, 18px) - 2px);
+    }
+}
