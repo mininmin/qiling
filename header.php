@@ -112,6 +112,114 @@ if ( $header_bg && ! ( $is_home && $transparent_home ) ) {
                         </div>
                     <?php endif; ?>
 
+                    <?php 
+                    // 顶部登录按钮
+                    // 注意：登录用户访问文章页面时缓存已被禁用（见 functions.php）
+                    // 因此可以直接使用标准的 is_user_logged_in() 判断
+                    $header_login_enable = developer_starter_get_option( 'header_login_enable', '' );
+                    if ( $header_login_enable && ! is_user_logged_in() ) :
+                        $login_text = developer_starter_get_option( 'header_login_text', '' );
+                        $login_text = ! empty( $login_text ) ? $login_text : '登录';
+                    ?>
+                        <div class="header-login">
+                            <button type="button" class="header-login-btn" id="header-login-toggle" title="<?php echo esc_attr( $login_text ); ?>">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                                <span><?php echo esc_html( $login_text ); ?></span>
+                            </button>
+                        </div>
+                    <?php elseif ( $header_login_enable && is_user_logged_in() ) : 
+                        $current_user = wp_get_current_user();
+                        // 使用 transient 缓存个人中心页面URL避免重复查询
+                        $account_url = get_transient( 'developer_starter_account_url' );
+                        if ( false === $account_url ) {
+                            $account_page = get_pages( array(
+                                'meta_key' => '_wp_page_template',
+                                'meta_value' => 'templates/template-account.php',
+                                'number' => 1,
+                            ) );
+                            $account_url = ! empty( $account_page ) ? get_permalink( $account_page[0]->ID ) : admin_url( 'profile.php' );
+                            set_transient( 'developer_starter_account_url', $account_url, DAY_IN_SECONDS );
+                        }
+                    ?>
+                        <div class="header-user-menu">
+                            <a href="<?php echo esc_url( $account_url ); ?>" class="header-user-btn" id="header-user-toggle" title="个人中心">
+                                <?php echo get_avatar( $current_user->ID, 32 ); ?>
+                            </a>
+                            <div class="user-dropdown" id="user-dropdown">
+                                <div class="dropdown-header">
+                                    <?php echo get_avatar( $current_user->ID, 48 ); ?>
+                                    <div class="dropdown-user-info">
+                                        <strong><?php echo esc_html( $current_user->display_name ); ?></strong>
+                                        <span><?php echo esc_html( $current_user->user_email ); ?></span>
+                                    </div>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <a href="<?php echo esc_url( $account_url ); ?>">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                    个人中心
+                                </a>
+                                <?php if ( current_user_can( 'read' ) ) : ?>
+                                <a href="<?php echo esc_url( admin_url() ); ?>">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                                    管理后台
+                                </a>
+                                <?php endif; ?>
+                                <div class="dropdown-divider"></div>
+                                <a href="<?php echo esc_url( wp_logout_url( home_url() ) ); ?>" class="logout-link">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                    退出登录
+                                </a>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+
+                    <?php 
+                    // 语言切换功能
+                    $translate_enable = developer_starter_get_option( 'translate_enable', '' );
+                    $translate_languages = developer_starter_get_option( 'translate_languages', array() );
+                    
+                    if ( $translate_enable && ! empty( $translate_languages ) ) : 
+                    ?>
+                        <div class="header-translate">
+                            <button type="button" class="translate-toggle" id="translate-toggle" title="语言切换">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="2" y1="12" x2="22" y2="12"/>
+                                    <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php 
+                    // 暗黑模式切换
+                    $darkmode_enable = developer_starter_get_option( 'darkmode_enable', '' );
+                    if ( $darkmode_enable ) : 
+                    ?>
+                        <div class="header-darkmode">
+                            <button type="button" class="darkmode-toggle" id="darkmode-toggle" title="切换暗黑模式">
+                                <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="5"/>
+                                    <line x1="12" y1="1" x2="12" y2="3"/>
+                                    <line x1="12" y1="21" x2="12" y2="23"/>
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                                    <line x1="1" y1="12" x2="3" y2="12"/>
+                                    <line x1="21" y1="12" x2="23" y2="12"/>
+                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                                </svg>
+                                <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+                                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    <?php endif; ?>
+
                     <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="<?php esc_attr_e( '菜单', 'developer-starter' ); ?>">
                         <span></span>
                         <span></span>

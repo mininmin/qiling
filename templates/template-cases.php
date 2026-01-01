@@ -52,17 +52,25 @@ $min_width = $grid_columns == 4 ? '250px' : ( $grid_columns == 2 ? '450px' : '35
             
             <div class="cases-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(<?php echo $min_width; ?>, 1fr)); gap: 30px;">
                 
-                <?php while ( $cases_query->have_posts() ) : $cases_query->the_post(); ?>
+                <?php while ( $cases_query->have_posts() ) : $cases_query->the_post(); 
+                    // 获取缩略图或文章第一张图片
+                    $image_url = '';
+                    if ( has_post_thumbnail() ) {
+                        $image_url = get_the_post_thumbnail_url( get_the_ID(), 'large' );
+                    } elseif ( function_exists( 'developer_starter_get_first_image' ) ) {
+                        $image_url = developer_starter_get_first_image( get_the_ID() );
+                    }
+                ?>
                     <article class="case-card" style="position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.1);">
                         
-                        <?php if ( has_post_thumbnail() ) : ?>
+                        <?php if ( $image_url ) : ?>
                             <div class="case-image" style="height: <?php echo intval( $thumb_height ); ?>px; overflow: hidden;">
                                 <a href="<?php the_permalink(); ?>">
-                                    <?php the_post_thumbnail( 'large', array( 'style' => 'width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;' ) ); ?>
+                                    <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;" />
                                 </a>
                             </div>
                         <?php else : ?>
-                            <div style="height: <?php echo intval( $thumb_height ); ?>px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                            <div style="height: <?php echo intval( $thumb_height ); ?>px; background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);"></div>
                         <?php endif; ?>
                         
                         <div class="case-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; padding: 30px; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);">

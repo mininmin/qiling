@@ -161,6 +161,28 @@ class Theme_Setup {
             'before_title'  => '<h3 class="widget-title">',
             'after_title'   => '</h3>',
         ) );
+        
+        // 文章侧边栏
+        register_sidebar( array(
+            'name'          => esc_html__( '文章侧边栏', 'developer-starter' ),
+            'id'            => 'sidebar-post',
+            'description'   => esc_html__( '在文章详情页侧边栏显示的小工具', 'developer-starter' ),
+            'before_widget' => '<div id="%1$s" class="widget %2$s">',
+            'after_widget'  => '</div>',
+            'before_title'  => '<h3 class="widget-title">',
+            'after_title'   => '</h3>',
+        ) );
+        
+        // 页面侧边栏
+        register_sidebar( array(
+            'name'          => esc_html__( '页面侧边栏', 'developer-starter' ),
+            'id'            => 'sidebar-page',
+            'description'   => esc_html__( '在默认页面侧边栏显示的小工具', 'developer-starter' ),
+            'before_widget' => '<div id="%1$s" class="widget %2$s">',
+            'after_widget'  => '</div>',
+            'before_title'  => '<h3 class="widget-title">',
+            'after_title'   => '</h3>',
+        ) );
     }
 
     /**
@@ -204,10 +226,6 @@ class Theme_Setup {
      * 添加预连接链接以提升性能
      */
     public function add_preconnect_links() {
-        // 预连接到Google Fonts
-        echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
-        echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
-        
         // 如果使用CDN则预连接
         $cdn_url = developer_starter_get_option( 'cdn_url', '' );
         if ( ! empty( $cdn_url ) ) {

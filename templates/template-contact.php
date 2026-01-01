@@ -15,6 +15,7 @@ $company_name = developer_starter_get_option( 'company_name', '' );
 $phone = developer_starter_get_option( 'company_phone', '' );
 $email = developer_starter_get_option( 'company_email', '' );
 $address = developer_starter_get_option( 'company_address', '' );
+$working_hours = developer_starter_get_option( 'company_working_hours', '' );
 ?>
 
 <div class="page-header" style="background: linear-gradient(135deg, var(--color-primary) 0%, #7c3aed 100%); padding: 100px 0 60px;">
@@ -83,6 +84,18 @@ $address = developer_starter_get_option( 'company_address', '' );
                             <div>
                                 <h4 style="margin: 0 0 5px; color: #64748b; font-size: 0.9rem; font-weight: 500;">公司地址</h4>
                                 <p style="margin: 0; color: #1e293b; font-weight: 600; line-height: 1.6;"><?php echo esc_html( $address ); ?></p>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if ( $working_hours ) : ?>
+                        <div class="contact-info-item" style="display: flex; align-items: flex-start; gap: 20px;">
+                            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </div>
+                            <div>
+                                <h4 style="margin: 0 0 5px; color: #64748b; font-size: 0.9rem; font-weight: 500;">工作时间</h4>
+                                <p style="margin: 0; color: #1e293b; font-weight: 600;"><?php echo esc_html( $working_hours ); ?></p>
                             </div>
                         </div>
                     <?php endif; ?>

@@ -43,6 +43,21 @@ class Module_Manager {
         $this->register_module( new Modules\Products_Module() );
         $this->register_module( new Modules\Cases_Module() );
         $this->register_module( new Modules\Downloads_Module() );
+        $this->register_module( new Modules\Process_Module() );
+        $this->register_module( new Modules\Pricing_Module() );
+        $this->register_module( new Modules\Video_Module() );
+        $this->register_module( new Modules\Testimonials_Module() );
+        $this->register_module( new Modules\Countdown_Module() );
+        $this->register_module( new Modules\Multi_Image_Text_Module() );
+        $this->register_module( new Modules\Features_List_Module() );
+        $this->register_module( new Modules\Team_Module() );
+        $this->register_module( new Modules\Gallery_Module() );
+        $this->register_module( new Modules\Branches_Module() );
+        $this->register_module( new Modules\Tabs_Module() );
+        $this->register_module( new Modules\Accordion_Module() );
+        $this->register_module( new Modules\Comparison_Module() );
+        $this->register_module( new Modules\Blog_Module() );
+        $this->register_module( new Modules\Featured_Posts_Module() );
     }
 
     public function register_module( Module_Base $module ) {

@@ -58,3 +58,14 @@ if ( ! function_exists( 'developer_starter_entry_footer' ) ) {
         edit_post_link( __( '编辑', 'developer-starter' ), '<span class="edit-link">', '</span>' );
     }
 }
+
+/**
+ * 获取资源版本号
+ * 用于模板文件中加载的CSS/JS，确保版本号与后台设置一致
+ */
+if ( ! function_exists( 'developer_starter_get_assets_version' ) ) {
+    function developer_starter_get_assets_version() {
+        $custom_version = developer_starter_get_option( 'assets_version', '' );
+        return ! empty( $custom_version ) ? $custom_version : DEVELOPER_STARTER_VERSION;
+    }
+}

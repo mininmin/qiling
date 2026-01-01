@@ -54,12 +54,20 @@ $min_width = $grid_columns == 4 ? '250px' : ( $grid_columns == 2 ? '400px' : '30
             
             <div class="products-grid products-layout-<?php echo esc_attr( $layout ); ?>" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(<?php echo $min_width; ?>, 1fr)); gap: 30px;">
                 
-                <?php while ( $products_query->have_posts() ) : $products_query->the_post(); ?>
+                <?php while ( $products_query->have_posts() ) : $products_query->the_post(); 
+                    // 获取缩略图或文章第一张图片
+                    $image_url = '';
+                    if ( has_post_thumbnail() ) {
+                        $image_url = get_the_post_thumbnail_url( get_the_ID(), 'medium_large' );
+                    } elseif ( function_exists( 'developer_starter_get_first_image' ) ) {
+                        $image_url = developer_starter_get_first_image( get_the_ID() );
+                    }
+                ?>
                     <article class="product-card" style="background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.08); transition: all 0.3s ease;">
-                        <?php if ( has_post_thumbnail() ) : ?>
+                        <?php if ( $image_url ) : ?>
                             <div class="product-image" style="height: <?php echo intval( $thumb_height ); ?>px; overflow: hidden;">
                                 <a href="<?php the_permalink(); ?>">
-                                    <?php the_post_thumbnail( 'medium_large', array( 'style' => 'width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;' ) ); ?>
+                                    <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;" />
                                 </a>
                             </div>
                         <?php else : ?>

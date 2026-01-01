@@ -3,19 +3,35 @@
  * Template Name: 解决方案
  * Template Post Type: page
  *
+ * 解决方案页面模板 - 支持内置模块布局
+ *
  * @package Developer_Starter
  * @since 1.0.0
  */
+
+// 加载解决方案页面专用样式
+add_action( 'wp_enqueue_scripts', function() {
+    wp_enqueue_style(
+        'developer-starter-solutions',
+        DEVELOPER_STARTER_ASSETS . '/css/solutions.css',
+        array( 'developer-starter-main' ),
+        developer_starter_get_assets_version()
+    );
+}, 20 );
 
 get_header();
 ?>
 
 <div class="page-template template-solutions">
     <!-- Page Header -->
-    <div class="page-hero page-hero-sm">
+    <div class="page-header" style="background: linear-gradient(135deg, var(--color-primary) 0%, #7c3aed 100%); padding: 100px 0 60px;">
         <div class="container">
-            <h1 class="page-hero-title" data-aos="fade-up"><?php the_title(); ?></h1>
-            <?php developer_starter_breadcrumb(); ?>
+            <h1 class="page-title" style="color: #fff; text-align: center; font-size: 2.5rem; margin: 0;" data-aos="fade-up">
+                <?php the_title(); ?>
+            </h1>
+            <p style="text-align: center; color: rgba(255,255,255,0.8); margin-top: 15px; font-size: 1.1rem;" data-aos="fade-up" data-aos-delay="100">
+                为您提供专业的行业解决方案
+            </p>
         </div>
     </div>
 
@@ -38,3 +54,4 @@ get_header();
 
 <?php
 get_footer();
+

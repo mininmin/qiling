@@ -68,6 +68,7 @@ class Contact_Module extends Module_Base {
         $phone = developer_starter_get_option( 'company_phone', '' );
         $email = developer_starter_get_option( 'company_email', '' );
         $address = developer_starter_get_option( 'company_address', '' );
+        $working_hours = developer_starter_get_option( 'company_working_hours', '' );
         ?>
         <section class="module module-contact section-padding" style="background: #f8fafc;">
             <div class="container">
@@ -126,6 +127,18 @@ class Contact_Module extends Module_Base {
                                 <div>
                                     <h4 style="margin: 0 0 4px; color: #94a3b8; font-size: 0.85rem; font-weight: 500;"><?php esc_html_e( '公司地址', 'developer-starter' ); ?></h4>
                                     <p style="margin: 0; color: #1e293b; font-weight: 600; line-height: 1.5;"><?php echo esc_html( $address ); ?></p>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ( $working_hours ) : ?>
+                            <div style="display: flex; align-items: flex-start; gap: 16px;">
+                                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                </div>
+                                <div>
+                                    <h4 style="margin: 0 0 4px; color: #94a3b8; font-size: 0.85rem; font-weight: 500;"><?php esc_html_e( '工作时间', 'developer-starter' ); ?></h4>
+                                    <p style="margin: 0; color: #1e293b; font-weight: 600;"><?php echo esc_html( $working_hours ); ?></p>
                                 </div>
                             </div>
                         <?php endif; ?>

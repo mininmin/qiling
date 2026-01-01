@@ -19,6 +19,21 @@ class SEO_Manager {
         add_action( 'wp_head', array( $this, 'output_schema' ), 5 );
         add_action( 'wp_head', array( $this, 'output_hreflang' ), 10 );
         add_filter( 'document_title_parts', array( $this, 'filter_title' ) );
+        add_filter( 'pre_get_document_title', array( $this, 'custom_document_title' ), 10 );
+    }
+
+    /**
+     * 完全自定义首页标题
+     */
+    public function custom_document_title( $title ) {
+        // 首页使用自定义标题
+        if ( is_front_page() || is_home() ) {
+            $custom_title = developer_starter_get_option( 'default_title', '' );
+            if ( ! empty( $custom_title ) ) {
+                return $custom_title;
+            }
+        }
+        return $title;
     }
 
     public function output_meta_tags() {
@@ -30,7 +45,9 @@ class SEO_Manager {
         $description = $this->get_description();
         $keywords    = $this->get_keywords();
         ?>
-        <meta name="description" content="<?php echo esc_attr( $description ); ?>" />
+        <?php if ( ! empty( $description ) ) : ?>
+            <meta name="description" content="<?php echo esc_attr( $description ); ?>" />
+        <?php endif; ?>
         <?php if ( ! empty( $keywords ) ) : ?>
             <meta name="keywords" content="<?php echo esc_attr( $keywords ); ?>" />
         <?php endif; ?>
@@ -94,7 +111,17 @@ class SEO_Manager {
     }
 
     public function filter_title( $title ) {
-        if ( is_singular() ) {
+        // 首页标题
+        if ( is_front_page() || is_home() ) {
+            $custom_title = developer_starter_get_option( 'default_title', '' );
+            if ( ! empty( $custom_title ) ) {
+                $title['title'] = $custom_title;
+                // 移除 tagline 避免重复
+                unset( $title['tagline'] );
+            }
+        }
+        // 单页/文章标题
+        elseif ( is_singular() ) {
             $seo_title = get_post_meta( get_the_ID(), '_developer_starter_seo_title', true );
             if ( ! empty( $seo_title ) ) {
                 $title['title'] = $seo_title;
@@ -104,6 +131,12 @@ class SEO_Manager {
     }
 
     private function get_title() {
+        // 首页
+        if ( is_front_page() || is_home() ) {
+            $custom_title = developer_starter_get_option( 'default_title', '' );
+            return ! empty( $custom_title ) ? $custom_title : get_bloginfo( 'name' );
+        }
+        // 单页/文章
         if ( is_singular() ) {
             $seo_title = get_post_meta( get_the_ID(), '_developer_starter_seo_title', true );
             return ! empty( $seo_title ) ? $seo_title : get_the_title();
@@ -112,18 +145,31 @@ class SEO_Manager {
     }
 
     private function get_description() {
+        // 首页
+        if ( is_front_page() || is_home() ) {
+            $custom_desc = developer_starter_get_option( 'default_description', '' );
+            return ! empty( $custom_desc ) ? $custom_desc : get_bloginfo( 'description' );
+        }
+        // 单页/文章
         if ( is_singular() ) {
             $seo_desc = get_post_meta( get_the_ID(), '_developer_starter_seo_description', true );
             if ( ! empty( $seo_desc ) ) return $seo_desc;
             return wp_trim_words( get_the_excerpt(), 30 );
         }
+        // 其他页面（分类、标签、归档等）
         return developer_starter_get_option( 'default_description', get_bloginfo( 'description' ) );
     }
 
     private function get_keywords() {
+        // 首页
+        if ( is_front_page() || is_home() ) {
+            return developer_starter_get_option( 'default_keywords', '' );
+        }
+        // 单页/文章
         if ( is_singular() ) {
             return get_post_meta( get_the_ID(), '_developer_starter_seo_keywords', true );
         }
+        // 其他页面
         return developer_starter_get_option( 'default_keywords', '' );
     }
 

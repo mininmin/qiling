@@ -130,6 +130,16 @@ class Meta_Boxes {
                 'title' => '合作客户',
                 'fields' => array(
                     array( 'id' => 'clients_title', 'label' => '标题', 'type' => 'text', 'default' => '合作客户' ),
+                    array( 'id' => 'clients_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'clients_bg_color', 'label' => '背景颜色(支持渐变)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'clients_title_color', 'label' => '标题颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'clients_columns', 'label' => '每行列数', 'type' => 'select', 'options' => array( '4' => '4列', '5' => '5列', '6' => '6列', '8' => '8列' ), 'default' => '6' ),
+                    array( 'id' => 'clients_auto_scroll', 'label' => '自动滚动', 'type' => 'select', 'options' => array( '' => '关闭', '1' => '开启' ), 'default' => '' ),
+                    array( 'id' => 'clients_scroll_speed', 'label' => '滚动速度(秒)', 'type' => 'number', 'default' => '30' ),
+                    array( 'id' => 'clients_logo_style', 'label' => 'Logo样式', 'type' => 'select', 'options' => array( 'normal' => '彩色', 'grayscale' => '灰度(悬停变彩)' ), 'default' => 'normal' ),
+                    array( 'id' => 'clients_logo_height', 'label' => 'Logo高度', 'type' => 'text', 'default' => '50px' ),
+                    array( 'id' => 'clients_card_bg', 'label' => '卡片背景色', 'type' => 'text', 'default' => '#ffffff' ),
+                    array( 'id' => 'clients_show_name', 'label' => '显示名称', 'type' => 'select', 'options' => array( '' => '不显示', '1' => '显示' ), 'default' => '' ),
                     array( 
                         'id' => 'clients_items', 
                         'label' => '客户列表', 
@@ -137,12 +147,15 @@ class Meta_Boxes {
                         'fields' => array(
                             array( 'id' => 'logo', 'label' => 'Logo', 'type' => 'image' ),
                             array( 'id' => 'name', 'label' => '名称', 'type' => 'text' ),
+                            array( 'id' => 'link', 'label' => '链接(可选)', 'type' => 'text' ),
                         ),
                         'default_items' => array(
-                            array( 'logo' => '', 'name' => '客户A公司' ),
-                            array( 'logo' => '', 'name' => '客户B集团' ),
-                            array( 'logo' => '', 'name' => '客户C科技' ),
-                            array( 'logo' => '', 'name' => '客户D企业' ),
+                            array( 'logo' => '', 'name' => '华为' ),
+                            array( 'logo' => '', 'name' => '阿里巴巴' ),
+                            array( 'logo' => '', 'name' => '腾讯' ),
+                            array( 'logo' => '', 'name' => '百度' ),
+                            array( 'logo' => '', 'name' => '京东' ),
+                            array( 'logo' => '', 'name' => '字节跳动' ),
                         ),
                     ),
                 ),
@@ -278,15 +291,519 @@ class Meta_Boxes {
                             array( 'id' => 'size', 'label' => '文件大小', 'type' => 'text' ),
                             array( 'id' => 'file', 'label' => '文件链接(可填外部URL)', 'type' => 'text' ),
                             array( 'id' => 'icon', 'label' => '图标(emoji)', 'type' => 'text' ),
+                            array( 'id' => 'format', 'label' => '文件格式(可选，如PDF)', 'type' => 'text' ),
+                            array( 'id' => 'date', 'label' => '文件日期(可选)', 'type' => 'text' ),
+                            array( 'id' => 'description', 'label' => '文件说明(可选)', 'type' => 'textarea' ),
                         ),
                         'default_items' => array(
-                            array( 'title' => '产品手册', 'size' => '2.5MB', 'file' => '', 'icon' => '📄' ),
-                            array( 'title' => '技术白皮书', 'size' => '1.2MB', 'file' => '', 'icon' => '📋' ),
+                            array( 'title' => '产品手册', 'size' => '2.5MB', 'file' => '', 'icon' => '📄', 'format' => 'PDF', 'date' => '', 'description' => '' ),
+                            array( 'title' => '技术白皮书', 'size' => '1.2MB', 'file' => '', 'icon' => '📋', 'format' => 'PDF', 'date' => '', 'description' => '' ),
                         ),
                     ),
                 ),
             ),
+            'process' => array(
+                'title' => '合作流程',
+                'fields' => array(
+                    array( 'id' => 'process_title', 'label' => '标题', 'type' => 'text', 'default' => '合作流程' ),
+                    array( 'id' => 'process_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '简单四步，开启合作之旅' ),
+                    array( 'id' => 'process_bg_color', 'label' => '板块背景色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'process_title_color', 'label' => '标题文字颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'process_subtitle_color', 'label' => '副标题文字颜色', 'type' => 'text', 'default' => '' ),
+                    array( 
+                        'id' => 'process_items', 
+                        'label' => '流程步骤', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'icon', 'label' => '图标(数字/emoji/iconfont类名)', 'type' => 'text' ),
+                            array( 'id' => 'title', 'label' => '步骤标题', 'type' => 'text' ),
+                            array( 'id' => 'title_color', 'label' => '标题文字颜色', 'type' => 'text' ),
+                            array( 'id' => 'desc', 'label' => '步骤描述', 'type' => 'textarea' ),
+                            array( 'id' => 'icon_bg', 'label' => '图标背景色(支持渐变)', 'type' => 'text' ),
+                        ),
+                        'default_items' => array(
+                            array( 'icon' => '01', 'title' => '需求沟通', 'desc' => '深入了解您的业务需求和目标', 'icon_bg' => 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' ),
+                            array( 'icon' => '02', 'title' => '方案设计', 'desc' => '根据需求制定专属解决方案', 'icon_bg' => 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' ),
+                            array( 'icon' => '03', 'title' => '开发实施', 'desc' => '专业团队高效执行项目开发', 'icon_bg' => 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' ),
+                            array( 'icon' => '04', 'title' => '交付上线', 'desc' => '严格测试后交付，持续技术支持', 'icon_bg' => 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' ),
+                        ),
+                    ),
+                ),
+            ),
+            'pricing' => array(
+                'title' => '价格方案',
+                'fields' => array(
+                    array( 'id' => 'pricing_title', 'label' => '标题', 'type' => 'text', 'default' => '价格方案' ),
+                    array( 'id' => 'pricing_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '选择适合您的方案，开启高效之旅' ),
+                    array( 'id' => 'pricing_bg_color', 'label' => '板块背景色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'pricing_title_color', 'label' => '标题文字颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'pricing_subtitle_color', 'label' => '副标题文字颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'pricing_columns', 'label' => '列数', 'type' => 'select', 'options' => array( '2' => '2列', '3' => '3列', '4' => '4列' ), 'default' => '3' ),
+                    array( 
+                        'id' => 'pricing_items', 
+                        'label' => '价格方案', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'name', 'label' => '方案名称', 'type' => 'text' ),
+                            array( 'id' => 'name_color', 'label' => '方案名称颜色', 'type' => 'text' ),
+                            array( 'id' => 'price', 'label' => '价格(如¥99)', 'type' => 'text' ),
+                            array( 'id' => 'price_color', 'label' => '价格颜色(支持渐变)', 'type' => 'text' ),
+                            array( 'id' => 'period', 'label' => '周期(如/月)', 'type' => 'text' ),
+                            array( 'id' => 'desc', 'label' => '方案描述', 'type' => 'text' ),
+                            array( 'id' => 'desc_color', 'label' => '描述文字颜色', 'type' => 'text' ),
+                            array( 'id' => 'features', 'label' => '特性列表(每行一个，✓表示包含，✗表示不包含)', 'type' => 'textarea' ),
+                            array( 'id' => 'btn_text', 'label' => '按钮文字', 'type' => 'text' ),
+                            array( 'id' => 'btn_link', 'label' => '按钮链接', 'type' => 'text' ),
+                            array( 'id' => 'btn_bg', 'label' => '按钮背景色(支持渐变)', 'type' => 'text' ),
+                            array( 'id' => 'btn_text_color', 'label' => '按钮文字颜色', 'type' => 'text' ),
+                            array( 'id' => 'card_bg', 'label' => '卡片背景色', 'type' => 'text' ),
+                            array( 'id' => 'featured', 'label' => '是否推荐(1=是)', 'type' => 'text' ),
+                            array( 'id' => 'featured_text', 'label' => '推荐标注文字', 'type' => 'text' ),
+                            array( 'id' => 'featured_bg', 'label' => '推荐标注背景色', 'type' => 'text' ),
+                        ),
+                        'default_items' => array(
+                            array( 'name' => '基础版', 'price' => '¥99', 'period' => '/月', 'desc' => '适合个人用户', 'features' => "✓ 基础功能支持\n✓ 5GB 存储空间\n✓ 邮件支持\n✗ 高级分析\n✗ API 接口", 'btn_text' => '立即购买', 'btn_link' => '#', 'card_bg' => '#ffffff', 'featured' => '', 'featured_text' => '', 'featured_bg' => '' ),
+                            array( 'name' => '专业版', 'price' => '¥299', 'period' => '/月', 'desc' => '适合成长型企业', 'features' => "✓ 全部基础功能\n✓ 50GB 存储空间\n✓ 优先技术支持\n✓ 高级数据分析\n✓ API 接口", 'btn_text' => '立即购买', 'btn_link' => '#', 'card_bg' => '#ffffff', 'featured' => '1', 'featured_text' => '推荐', 'featured_bg' => 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' ),
+                            array( 'name' => '企业版', 'price' => '¥999', 'period' => '/月', 'desc' => '适合大型企业', 'features' => "✓ 全部专业功能\n✓ 无限存储空间\n✓ 7×24专属客服\n✓ 定制化开发\n✓ 专属客户经理", 'btn_text' => '联系我们', 'btn_link' => '#', 'card_bg' => '#ffffff', 'featured' => '', 'featured_text' => '', 'featured_bg' => '' ),
+                        ),
+                    ),
+                ),
+            ),
+            'video' => array(
+                'title' => '视频展示',
+                'fields' => array(
+                    array( 'id' => 'video_title', 'label' => '标题', 'type' => 'text', 'default' => '视频展示' ),
+                    array( 'id' => 'video_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'video_bg_color', 'label' => '板块背景色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'video_title_color', 'label' => '标题文字颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'video_subtitle_color', 'label' => '副标题文字颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'video_url', 'label' => '视频链接', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'video_width', 'label' => '播放器宽度', 'type' => 'text', 'default' => '100%' ),
+                    array( 'id' => 'video_height', 'label' => '播放器高度', 'type' => 'text', 'default' => '500px' ),
+                    array( 'id' => 'video_poster', 'label' => '封面图(仅普通视频)', 'type' => 'image', 'default' => '' ),
+                ),
+            ),
+            'testimonials' => array(
+                'title' => '客户评价',
+                'fields' => array(
+                    array( 'id' => 'testimonials_title', 'label' => '标题', 'type' => 'text', 'default' => '客户评价' ),
+                    array( 'id' => 'testimonials_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '听听客户怎么说' ),
+                    array( 'id' => 'testimonials_bg_color', 'label' => '板块背景色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'testimonials_title_color', 'label' => '标题文字颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'testimonials_subtitle_color', 'label' => '副标题文字颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'testimonials_columns', 'label' => '列数', 'type' => 'select', 'options' => array( '2' => '2列', '3' => '3列', '4' => '4列' ), 'default' => '3' ),
+                    array( 
+                        'id' => 'testimonials_items', 
+                        'label' => '客户评价列表', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'avatar', 'label' => '头像图片', 'type' => 'image' ),
+                            array( 'id' => 'name', 'label' => '客户姓名', 'type' => 'text' ),
+                            array( 'id' => 'name_color', 'label' => '姓名颜色', 'type' => 'text' ),
+                            array( 'id' => 'position', 'label' => '职位/公司', 'type' => 'text' ),
+                            array( 'id' => 'content', 'label' => '评价内容', 'type' => 'textarea' ),
+                            array( 'id' => 'content_color', 'label' => '评价内容颜色', 'type' => 'text' ),
+                            array( 'id' => 'rating', 'label' => '星级评分(1-5)', 'type' => 'text' ),
+                            array( 'id' => 'card_bg', 'label' => '卡片背景色', 'type' => 'text' ),
+                        ),
+                        'default_items' => array(
+                            array( 'avatar' => '', 'name' => '张先生', 'position' => 'CEO · 某科技公司', 'content' => '非常专业的团队，项目交付准时，质量超出预期。推荐给所有需要高品质服务的企业！', 'rating' => '5', 'card_bg' => '#ffffff' ),
+                            array( 'avatar' => '', 'name' => '李女士', 'position' => '市场总监 · 某传媒集团', 'content' => '合作非常愉快，沟通顺畅，设计方案很有创意，完美达成了我们的需求目标。', 'rating' => '5', 'card_bg' => '#ffffff' ),
+                            array( 'avatar' => '', 'name' => '王总', 'position' => '创始人 · 某电商平台', 'content' => '从需求分析到最终交付，每个环节都很用心。技术实力强，值得长期合作！', 'rating' => '5', 'card_bg' => '#ffffff' ),
+                        ),
+                    ),
+                ),
+            ),
+            'countdown' => array(
+                'title' => '产品倒计时',
+                'fields' => array(
+                    array( 'id' => 'countdown_title', 'label' => '标题', 'type' => 'text', 'default' => '新品即将上线' ),
+                    array( 'id' => 'countdown_subtitle', 'label' => '副标题标签', 'type' => 'text', 'default' => '敬请期待' ),
+                    array( 'id' => 'countdown_desc', 'label' => '描述文字', 'type' => 'textarea', 'default' => '我们正在精心打造一款革命性的产品，即将与您见面！' ),
+                    array( 'id' => 'countdown_image', 'label' => '产品图片', 'type' => 'image', 'default' => '' ),
+                    array( 'id' => 'countdown_days', 'label' => '倒计时天数', 'type' => 'text', 'default' => '7' ),
+                    array( 'id' => 'countdown_date', 'label' => '或指定目标日期', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'countdown_bg_color', 'label' => '板块背景色(支持渐变)', 'type' => 'text', 'default' => 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' ),
+                    array( 'id' => 'countdown_title_color', 'label' => '标题颜色', 'type' => 'text', 'default' => '#ffffff' ),
+                    array( 'id' => 'countdown_subtitle_color', 'label' => '副标题颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'countdown_desc_color', 'label' => '描述颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'countdown_timer_bg', 'label' => '计时器背景色', 'type' => 'text', 'default' => 'rgba(255,255,255,0.15)' ),
+                    array( 'id' => 'countdown_timer_color', 'label' => '计时器文字颜色', 'type' => 'text', 'default' => '#ffffff' ),
+                    array( 'id' => 'countdown_btn_text', 'label' => '按钮文字', 'type' => 'text', 'default' => '立即预约' ),
+                    array( 'id' => 'countdown_btn_link', 'label' => '按钮链接', 'type' => 'text', 'default' => '#' ),
+                    array( 'id' => 'countdown_btn_bg', 'label' => '按钮背景色', 'type' => 'text', 'default' => '#ffffff' ),
+                    array( 'id' => 'countdown_btn_text_color', 'label' => '按钮文字颜色', 'type' => 'text', 'default' => '#667eea' ),
+                ),
+            ),
+            'multi_image_text' => array(
+                'title' => '多图文模块',
+                'fields' => array(
+                    array( 'id' => 'multi_image_text_title', 'label' => '模块标题', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'multi_image_text_subtitle', 'label' => '模块副标题', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'multi_image_text_layout', 'label' => '图片位置', 'type' => 'select', 'options' => array( 'left' => '图片在左', 'right' => '图片在右' ), 'default' => 'left' ),
+                    array( 'id' => 'multi_image_text_bg_color', 'label' => '板块背景色(支持渐变)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'multi_image_text_title_color', 'label' => '模块标题颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'multi_image_text_subtitle_color', 'label' => '模块副标题颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'multi_image_text_item_title_size', 'label' => '项目标题文字大小', 'type' => 'text', 'default' => '1.25rem' ),
+                    array( 
+                        'id' => 'multi_image_text_items', 
+                        'label' => '图文项目', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'icon', 'label' => '图标(emoji/iconfont类名/HTML)', 'type' => 'text' ),
+                            array( 'id' => 'title', 'label' => '标题', 'type' => 'text' ),
+                            array( 'id' => 'title_color', 'label' => '标题颜色', 'type' => 'text' ),
+                            array( 'id' => 'desc', 'label' => '描述', 'type' => 'textarea' ),
+                            array( 'id' => 'desc_color', 'label' => '描述颜色', 'type' => 'text' ),
+                            array( 'id' => 'image', 'label' => '对应图片', 'type' => 'image' ),
+                            array( 'id' => 'link', 'label' => '链接(可选)', 'type' => 'text' ),
+                        ),
+                        'default_items' => array(
+                            array( 'icon' => '🚀', 'title' => '快速部署', 'desc' => '采用自动化部署流程，5分钟即可完成系统上线，大幅降低运维成本和时间投入。', 'image' => '', 'link' => '' ),
+                            array( 'icon' => '🛡️', 'title' => '安全可靠', 'desc' => '企业级安全架构，多层防护机制，数据加密存储，确保您的业务数据安全无虞。', 'image' => '', 'link' => '' ),
+                            array( 'icon' => '📊', 'title' => '数据分析', 'desc' => '强大的数据分析引擎，实时监控业务指标，智能报表助力精准决策。', 'image' => '', 'link' => '' ),
+                        ),
+                    ),
+                ),
+            ),
+            'features_list' => array(
+                'title' => '功能清单列表',
+                'fields' => array(
+                    array( 'id' => 'title', 'label' => '标题', 'type' => 'text', 'default' => '产品功能' ),
+                    array( 'id' => 'subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '全面的功能特性，满足您的各种需求' ),
+                    array( 'id' => 'bg_color', 'label' => '背景颜色(支持渐变)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'text_color', 'label' => '文字颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'columns', 'label' => '每行卡片数', 'type' => 'select', 'options' => array( '3' => '3列', '4' => '4列' ), 'default' => '3' ),
+                    array( 
+                        'id' => 'tabs', 
+                        'label' => '功能标签', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'tab_id', 'label' => '标签ID(唯一)', 'type' => 'text' ),
+                            array( 'id' => 'tab_title', 'label' => '标签标题', 'type' => 'text' ),
+                            array( 'id' => 'tab_icon', 'label' => '标签图标(emoji)', 'type' => 'text' ),
+                            array( 
+                                'id' => 'features', 
+                                'label' => '功能清单(每行一个，格式: emoji|标题|描述)', 
+                                'type' => 'textarea',
+                                'description' => '每行一个功能，格式：🎨|模块化设计|支持20+内置模块'
+                            ),
+                        ),
+                        'default_items' => array(
+                            array( 
+                                'tab_id' => 'core', 
+                                'tab_title' => '核心功能', 
+                                'tab_icon' => '⚡',
+                                'features' => "🎨|模块化设计|支持20+内置模块，拖拽即可搭建页面\n🚀|性能优化|极致的加载速度，WebP图片自动转换\n📱|完美响应式|适配所有设备，移动端体验流畅" 
+                            ),
+                            array( 
+                                'tab_id' => 'highlights', 
+                                'tab_title' => '特色亮点', 
+                                'tab_icon' => '✨',
+                                'features' => "🌓|暗黑模式|支持明暗主题切换\n🌐|多语言切换|轻松实现国际化\n🎬|视频展示|支持直链和视频嵌入" 
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            'team' => array(
+                'title' => '团队成员',
+                'fields' => array(
+                    array( 'id' => 'team_title', 'label' => '标题', 'type' => 'text', 'default' => '核心团队' ),
+                    array( 'id' => 'team_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '专业团队，值得信赖' ),
+                    array( 'id' => 'team_bg_color', 'label' => '背景颜色(支持渐变)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'team_title_color', 'label' => '标题颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'team_subtitle_color', 'label' => '副标题颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'team_columns', 'label' => '每行列数', 'type' => 'select', 'options' => array( '2' => '2列', '3' => '3列', '4' => '4列' ), 'default' => '4' ),
+                    array( 
+                        'id' => 'team_members', 
+                        'label' => '团队成员', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'avatar', 'label' => '头像', 'type' => 'image' ),
+                            array( 'id' => 'name', 'label' => '姓名', 'type' => 'text' ),
+                            array( 'id' => 'position', 'label' => '职位', 'type' => 'text' ),
+                            array( 'id' => 'desc', 'label' => '简介', 'type' => 'textarea' ),
+                            array( 'id' => 'wechat', 'label' => '微信二维码', 'type' => 'image' ),
+                            array( 'id' => 'email', 'label' => '邮箱', 'type' => 'text' ),
+                            array( 'id' => 'phone', 'label' => '电话', 'type' => 'text' ),
+                        ),
+                        'default_items' => array(
+                            array( 'avatar' => '', 'name' => '张明', 'position' => '首席执行官', 'desc' => '20年行业经验，曾任多家知名企业高管。' ),
+                            array( 'avatar' => '', 'name' => '李华', 'position' => '技术总监', 'desc' => '资深技术专家，主导多个大型项目研发。' ),
+                            array( 'avatar' => '', 'name' => '王芳', 'position' => '市场总监', 'desc' => '深耕市场营销领域15年，擅长品牌策略。' ),
+                            array( 'avatar' => '', 'name' => '刘强', 'position' => '运营总监', 'desc' => '精细化运营专家，打造高效团队管理体系。' ),
+                        ),
+                    ),
+                ),
+            ),
+            'gallery' => array(
+                'title' => '画廊相册',
+                'fields' => array(
+                    array( 'id' => 'gallery_title', 'label' => '标题', 'type' => 'text', 'default' => '图片展示' ),
+                    array( 'id' => 'gallery_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'gallery_bg_color', 'label' => '背景颜色(支持渐变)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'gallery_title_color', 'label' => '标题颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'gallery_columns', 'label' => '每行列数', 'type' => 'select', 'options' => array( '2' => '2列', '3' => '3列', '4' => '4列', '5' => '5列' ), 'default' => '4' ),
+                    array( 'id' => 'gallery_style', 'label' => '展示样式', 'type' => 'select', 'options' => array( 'grid' => '网格布局', 'masonry' => '瀑布流' ), 'default' => 'grid' ),
+                    array( 'id' => 'gallery_gap', 'label' => '图片间距(px)', 'type' => 'number', 'default' => '15' ),
+                    array( 'id' => 'gallery_lightbox', 'label' => '点击放大', 'type' => 'select', 'options' => array( '1' => '是', '0' => '否' ), 'default' => '1' ),
+                    array( 
+                        'id' => 'gallery_images', 
+                        'label' => '图片列表', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'image', 'label' => '图片', 'type' => 'image' ),
+                            array( 'id' => 'title', 'label' => '标题', 'type' => 'text' ),
+                            array( 'id' => 'desc', 'label' => '描述', 'type' => 'text' ),
+                        ),
+                        'default_items' => array(
+                            array( 'image' => '', 'title' => '产品展示', 'desc' => '' ),
+                            array( 'image' => '', 'title' => '办公环境', 'desc' => '' ),
+                            array( 'image' => '', 'title' => '团队活动', 'desc' => '' ),
+                            array( 'image' => '', 'title' => '荣誉资质', 'desc' => '' ),
+                        ),
+                    ),
+                ),
+            ),
+            'branches' => array(
+                'title' => '门店机构',
+                'fields' => array(
+                    array( 'id' => 'branches_title', 'label' => '标题', 'type' => 'text', 'default' => '全国分支机构' ),
+                    array( 'id' => 'branches_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '覆盖全国主要城市，为您提供本地化服务' ),
+                    array( 'id' => 'branches_bg_color', 'label' => '背景颜色(支持渐变)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'branches_title_color', 'label' => '标题颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'branches_columns', 'label' => '每行列数', 'type' => 'select', 'options' => array( '2' => '2列', '3' => '3列', '4' => '4列' ), 'default' => '3' ),
+                    array( 
+                        'id' => 'branches_list', 
+                        'label' => '分支机构列表', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'name', 'label' => '机构名称', 'type' => 'text' ),
+                            array( 'id' => 'address', 'label' => '地址', 'type' => 'textarea' ),
+                            array( 'id' => 'phone', 'label' => '电话', 'type' => 'text' ),
+                            array( 'id' => 'email', 'label' => '邮箱', 'type' => 'text' ),
+                            array( 'id' => 'hours', 'label' => '营业时间', 'type' => 'text' ),
+                            array( 'id' => 'image', 'label' => '图片(可选)', 'type' => 'image' ),
+                            array( 'id' => 'map_url', 'label' => '地图链接(可选)', 'type' => 'text' ),
+                        ),
+                        'default_items' => array(
+                            array( 'name' => '北京总部', 'address' => '北京市朝阳区建国路88号SOHO现代城A座', 'phone' => '010-88888888', 'email' => 'beijing@example.com', 'hours' => '周一至周五 9:00-18:00' ),
+                            array( 'name' => '上海分公司', 'address' => '上海市浦东新区陆家嘴环路1000号恒生银行大厦', 'phone' => '021-88888888', 'email' => 'shanghai@example.com', 'hours' => '周一至周五 9:00-18:00' ),
+                            array( 'name' => '深圳分公司', 'address' => '深圳市南山区科技园南区高新南七道', 'phone' => '0755-88888888', 'email' => 'shenzhen@example.com', 'hours' => '周一至周五 9:00-18:00' ),
+                        ),
+                    ),
+                ),
+            ),
+            'tabs' => array(
+                'title' => '标签切换',
+                'fields' => array(
+                    array( 'id' => 'tabs_title', 'label' => '标题', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'tabs_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'tabs_bg_color', 'label' => '背景颜色(支持渐变)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'tabs_title_color', 'label' => '标题颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'tabs_style', 'label' => '标签样式', 'type' => 'select', 'options' => array( 'default' => '默认样式', 'pills' => '胶囊样式', 'underline' => '下划线样式', 'boxed' => '卡片样式' ), 'default' => 'default' ),
+                    array( 'id' => 'tabs_align', 'label' => '标签对齐', 'type' => 'select', 'options' => array( 'left' => '左对齐', 'center' => '居中', 'right' => '右对齐' ), 'default' => 'center' ),
+                    array( 
+                        'id' => 'tabs_items', 
+                        'label' => '标签页', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'title', 'label' => '标签标题', 'type' => 'text' ),
+                            array( 'id' => 'icon', 'label' => '图标(emoji或留空)', 'type' => 'text' ),
+                            array( 'id' => 'content', 'label' => '标签内容(支持HTML)', 'type' => 'textarea' ),
+                        ),
+                        'default_items' => array(
+                            array( 'title' => '产品介绍', 'icon' => '📦', 'content' => '<p>这里是产品介绍的详细内容。</p>' ),
+                            array( 'title' => '技术规格', 'icon' => '⚙️', 'content' => '<p>产品的技术参数和规格说明。</p>' ),
+                            array( 'title' => '使用说明', 'icon' => '📖', 'content' => '<p>产品的使用步骤和注意事项。</p>' ),
+                        ),
+                    ),
+                ),
+            ),
+            'accordion' => array(
+                'title' => '手风琴',
+                'fields' => array(
+                    array( 'id' => 'accordion_title', 'label' => '标题', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'accordion_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'accordion_bg_color', 'label' => '背景颜色(支持渐变)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'accordion_title_color', 'label' => '标题颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'accordion_style', 'label' => '样式', 'type' => 'select', 'options' => array( 'default' => '默认(阴影)', 'bordered' => '边框', 'minimal' => '简约' ), 'default' => 'default' ),
+                    array( 'id' => 'accordion_multiple', 'label' => '允许多个展开', 'type' => 'select', 'options' => array( '' => '否', '1' => '是' ), 'default' => '' ),
+                    array( 'id' => 'accordion_first_open', 'label' => '默认展开第一项', 'type' => 'select', 'options' => array( '1' => '是', '' => '否' ), 'default' => '1' ),
+                    array( 
+                        'id' => 'accordion_items', 
+                        'label' => '折叠项', 
+                        'type' => 'repeater', 
+                        'fields' => array(
+                            array( 'id' => 'title', 'label' => '标题', 'type' => 'text' ),
+                            array( 'id' => 'icon', 'label' => '图标(emoji)', 'type' => 'text' ),
+                            array( 'id' => 'content', 'label' => '内容(支持HTML)', 'type' => 'textarea' ),
+                        ),
+                        'default_items' => array(
+                            array( 'title' => '产品质量如何保证？', 'icon' => '🛡️', 'content' => '我们拥有完善的质量管理体系，每件产品都经过严格的质检流程。' ),
+                            array( 'title' => '配送范围和时效？', 'icon' => '🚚', 'content' => '我们支持全国配送，一二线城市1-3天送达，其他地区3-7天送达。' ),
+                            array( 'title' => '售后服务政策？', 'icon' => '💬', 'content' => '我们提供7x24小时在线客服支持，产品享有1年质保期。' ),
+                        ),
+                    ),
+                ),
+            ),
+            'comparison' => array(
+                'title' => '比较表格',
+                'fields' => array(
+                    array( 'id' => 'comparison_title', 'label' => '标题', 'type' => 'text', 'default' => '产品对比' ),
+                    array( 'id' => 'comparison_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'comparison_bg_color', 'label' => '背景颜色(支持渐变)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'comparison_title_color', 'label' => '标题颜色', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'comparison_highlight', 'label' => '高亮推荐列(从1开始)', 'type' => 'number', 'default' => '0' ),
+                    array( 'id' => 'comparison_features', 'label' => '功能特性列表(每行一个)', 'type' => 'textarea', 'default' => "基础功能\n高级功能\n技术支持\nAPI接口\n数据导出\n自定义域名" ),
+                    array( 
+                        'id' => 'comparison_products', 
+                        'label' => '对比产品/方案', 
+                        'type' => 'repeater', 
+                        'description' => '每个产品的值用换行分隔，与功能特性一一对应',
+                        'fields' => array(
+                            array( 'id' => 'name', 'label' => '产品名称', 'type' => 'text' ),
+                            array( 'id' => 'values', 'label' => '对应值(每行一个，✓/✗或文字)', 'type' => 'textarea' ),
+                        ),
+                        'default_items' => array(
+                            array( 'name' => '基础版', 'values' => "✓\n✗\n邮件支持\n✗\n✗\n✗" ),
+                            array( 'name' => '专业版', 'values' => "✓\n✓\n在线客服\n✓\n✓\n✗" ),
+                            array( 'name' => '企业版', 'values' => "✓\n✓\n7×24专属\n✓\n✓\n✓" ),
+                        ),
+                    ),
+                ),
+            ),
+            'blog' => array(
+                'title' => '博客布局',
+                'fields' => array(
+                    // 基础配置
+                    array( 'id' => 'blog_title', 'label' => '模块标题', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'blog_subtitle', 'label' => '副标题', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'blog_bg_color', 'label' => '背景颜色(支持渐变)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'blog_title_color', 'label' => '标题颜色', 'type' => 'text', 'default' => '' ),
+                    
+                    // 页面布局
+                    array( 'id' => 'blog_page_layout', 'label' => '页面布局', 'type' => 'select', 'options' => array( 
+                        'full' => '单栏（无侧边栏）', 
+                        'sidebar-right' => '双栏（侧边栏在右）', 
+                        'sidebar-left' => '双栏（侧边栏在左）' 
+                    ), 'default' => 'full' ),
+                    
+                    // 布局样式
+                    array( 'id' => 'blog_layout_style', 'label' => '文章布局样式', 'type' => 'select', 'options' => array( 
+                        'card' => '卡片式', 
+                        'list' => '列表式', 
+                        'grid' => '网格式',
+                        'large' => '大图式'
+                    ), 'default' => 'card' ),
+                    array( 'id' => 'blog_columns', 'label' => '每行列数(卡片/网格)', 'type' => 'select', 'options' => array( '2' => '2列', '3' => '3列', '4' => '4列' ), 'default' => '3' ),
+                    
+                    // 数据来源
+                    array( 'id' => 'blog_data_source', 'label' => '数据来源', 'type' => 'select', 'options' => array( 
+                        'latest' => '最新文章', 
+                        'category' => '指定分类', 
+                        'tag' => '指定标签' 
+                    ), 'default' => 'latest' ),
+                    array( 'id' => 'blog_categories', 'label' => '分类ID(多个逗号分隔)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'blog_tags', 'label' => '标签ID或slug(多个逗号分隔)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'blog_count', 'label' => '显示数量', 'type' => 'number', 'default' => '6' ),
+                    array( 'id' => 'blog_orderby', 'label' => '排序方式', 'type' => 'select', 'options' => array( 
+                        'date' => '最新发布', 
+                        'random' => '随机', 
+                        'comment_count' => '评论数', 
+                        'views' => '浏览量' 
+                    ), 'default' => 'date' ),
+                    
+                    // 显示控制
+                    array( 'id' => 'blog_show_image', 'label' => '显示缩略图', 'type' => 'select', 'options' => array( 'yes' => '是', 'no' => '否' ), 'default' => 'yes' ),
+                    array( 'id' => 'blog_image_height', 'label' => '缩略图高度(卡片/网格/大图)', 'type' => 'text', 'default' => '200px' ),
+                    array( 'id' => 'blog_show_excerpt', 'label' => '显示摘要', 'type' => 'select', 'options' => array( 'yes' => '是', 'no' => '否' ), 'default' => 'yes' ),
+                    array( 'id' => 'blog_excerpt_length', 'label' => '摘要字数', 'type' => 'number', 'default' => '80' ),
+                    array( 'id' => 'blog_show_author', 'label' => '显示作者', 'type' => 'select', 'options' => array( 'no' => '否', 'yes' => '是' ), 'default' => 'no' ),
+                    array( 'id' => 'blog_show_date', 'label' => '显示日期', 'type' => 'select', 'options' => array( 'yes' => '是', 'no' => '否' ), 'default' => 'yes' ),
+                    array( 'id' => 'blog_show_category', 'label' => '显示分类', 'type' => 'select', 'options' => array( 'no' => '否', 'yes' => '是' ), 'default' => 'yes' ),
+                    array( 'id' => 'blog_show_tags', 'label' => '显示标签', 'type' => 'select', 'options' => array( 'no' => '否', 'yes' => '是' ), 'default' => 'no' ),
+                    array( 'id' => 'blog_read_more_text', 'label' => '阅读更多按钮文字', 'type' => 'text', 'default' => '阅读全文' ),
+                    
+                    // 分页配置
+                    array( 'id' => 'blog_enable_pagination', 'label' => '启用分页(博客页面模板)', 'type' => 'select', 'options' => array( 'no' => '否', 'yes' => '是' ), 'default' => 'no' ),
+                ),
+            ),
+            
+            // 博客置顶推荐模块
+            'featured_posts' => array(
+                'title' => '博客置顶推荐',
+                'fields' => array(
+                    // 基础配置
+                    array( 'id' => 'fp_title', 'label' => '模块标题', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'fp_bg_color', 'label' => '背景颜色', 'type' => 'text', 'default' => '' ),
+                    
+                    // 布局配置
+                    array( 'id' => 'fp_layout', 'label' => '布局样式', 'type' => 'select', 'options' => array( 
+                        'full' => '通栏轮播', 
+                        'dual' => '双栏布局(左轮播+右列表)' 
+                    ), 'default' => 'full' ),
+                    array( 'id' => 'fp_slider_ratio', 'label' => '轮播区域占比%(双栏)', 'type' => 'number', 'default' => '65' ),
+                    array( 'id' => 'fp_slider_height', 'label' => '轮播高度', 'type' => 'text', 'default' => '400px' ),
+                    
+                    // 轮播配置
+                    array( 'id' => 'fp_autoplay', 'label' => '自动播放', 'type' => 'select', 'options' => array( 'yes' => '是', 'no' => '否' ), 'default' => 'yes' ),
+                    array( 'id' => 'fp_interval', 'label' => '播放间隔(毫秒)', 'type' => 'number', 'default' => '5000' ),
+                    array( 'id' => 'fp_effect', 'label' => '切换效果', 'type' => 'select', 'options' => array( 'fade' => '淡入淡出', 'slide' => '滑动' ), 'default' => 'fade' ),
+                    array( 'id' => 'fp_show_arrows', 'label' => '显示箭头', 'type' => 'select', 'options' => array( 'yes' => '是', 'no' => '否' ), 'default' => 'yes' ),
+                    array( 'id' => 'fp_show_dots', 'label' => '显示导航点', 'type' => 'select', 'options' => array( 'yes' => '是', 'no' => '否' ), 'default' => 'yes' ),
+                    
+                    // 轮播数据来源
+                    array( 'id' => 'fp_slider_source', 'label' => '轮播数据来源', 'type' => 'select', 'options' => array( 
+                        'latest' => '最新文章', 
+                        'random' => '随机文章',
+                        'popular' => '热门(按浏览量)',
+                        'comment' => '热门(按评论数)',
+                        'category' => '指定分类',
+                        'manual' => '手动选择'
+                    ), 'default' => 'latest' ),
+                    array( 'id' => 'fp_slider_ids', 'label' => '轮播文章ID(逗号分隔)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'fp_slider_category', 'label' => '轮播分类ID(逗号分隔)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'fp_slider_count', 'label' => '轮播文章数量', 'type' => 'number', 'default' => '5' ),
+                    
+                    // 列表数据来源(双栏)
+                    array( 'id' => 'fp_list_source', 'label' => '列表数据来源(双栏)', 'type' => 'select', 'options' => array( 
+                        'latest' => '最新文章', 
+                        'random' => '随机文章',
+                        'popular' => '热门(按浏览量)',
+                        'comment' => '热门(按评论数)',
+                        'category' => '指定分类',
+                        'manual' => '手动选择'
+                    ), 'default' => 'latest' ),
+                    array( 'id' => 'fp_list_ids', 'label' => '列表文章ID(逗号分隔)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'fp_list_category', 'label' => '列表分类ID(逗号分隔)', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'fp_list_count', 'label' => '列表文章数量', 'type' => 'number', 'default' => '4' ),
+                    
+                    // 角标配置
+                    array( 'id' => 'fp_badge_type', 'label' => '角标类型', 'type' => 'select', 'options' => array( 
+                        'none' => '不显示', 
+                        'recommend' => '推荐',
+                        'hot' => '热门',
+                        'featured' => '精选',
+                        'top' => '置顶',
+                        'custom' => '自定义'
+                    ), 'default' => 'none' ),
+                    array( 'id' => 'fp_badge_text', 'label' => '自定义角标文字', 'type' => 'text', 'default' => '' ),
+                    array( 'id' => 'fp_badge_position', 'label' => '角标位置', 'type' => 'select', 'options' => array( 'left' => '左侧', 'right' => '右侧' ), 'default' => 'left' ),
+                    array( 'id' => 'fp_badge_color', 'label' => '角标颜色', 'type' => 'text', 'default' => '' ),
+                    
+                    // 显示控制
+                    array( 'id' => 'fp_show_category', 'label' => '显示分类', 'type' => 'select', 'options' => array( 'no' => '否', 'yes' => '是' ), 'default' => 'yes' ),
+                    array( 'id' => 'fp_show_author', 'label' => '显示作者', 'type' => 'select', 'options' => array( 'no' => '否', 'yes' => '是' ), 'default' => 'no' ),
+                    array( 'id' => 'fp_show_date', 'label' => '显示日期', 'type' => 'select', 'options' => array( 'no' => '否', 'yes' => '是' ), 'default' => 'yes' ),
+                    array( 'id' => 'fp_show_excerpt', 'label' => '显示摘要', 'type' => 'select', 'options' => array( 'no' => '否', 'yes' => '是' ), 'default' => 'no' ),
+                ),
+            ),
         );
+        
+        // 允许插件扩展模块字段
+        $this->module_fields = apply_filters( 'developer_starter_module_fields', $this->module_fields );
     }
 
     public function enqueue_scripts( $hook ) {
@@ -403,7 +920,10 @@ class Meta_Boxes {
                 color: #b32d2e; 
                 text-decoration: none; 
             }
-            .dsm-img-preview { max-width: 100px; margin-top: 8px; display: block; border-radius: 4px; }
+            .dsm-img-preview { max-width: 100px; max-height: 80px; margin-top: 8px; display: block; border-radius: 4px; object-fit: cover; }
+            .dsm-img-wrap { display: inline-block; position: relative; margin-top: 8px; }
+            .dsm-img-wrap .dsm-img-preview { margin-top: 0; }
+            .dsm-img-remove { position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; background: #dc3232; color: #fff; border: none; border-radius: 50%; cursor: pointer; font-size: 12px; line-height: 16px; text-align: center; padding: 0; }
             .dsm-btn-add { 
                 background: #2271b1; 
                 color: #fff; 
@@ -507,7 +1027,7 @@ class Meta_Boxes {
                 var $btn = $(this);
                 var $field = $btn.closest('.dsm-field');
                 var $inp = $field.find('.dsm-img-input');
-                var $prev = $field.find('.dsm-img-preview');
+                var $wrap = $field.find('.dsm-img-wrap');
                 
                 if(typeof wp === 'undefined' || typeof wp.media === 'undefined') {
                     alert('媒体库加载失败，请刷新页面重试');
@@ -523,14 +1043,25 @@ class Meta_Boxes {
                 frame.on('select', function(){
                     var att = frame.state().get('selection').first().toJSON();
                     $inp.val(att.url);
-                    if($prev.length){
-                        $prev.attr('src', att.url).show();
+                    if($wrap.length){
+                        $wrap.find('.dsm-img-preview').attr('src', att.url);
+                        $wrap.show();
                     } else {
-                        $btn.after('<img src="'+ att.url +'" class="dsm-img-preview" style="max-width:100px;margin-top:8px;display:block;border-radius:4px;"/>');
+                        $btn.after('<span class="dsm-img-wrap"><img src="'+ att.url +'" class="dsm-img-preview"/><button type="button" class="dsm-img-remove">×</button></span>');
                     }
                 });
                 
                 frame.open();
+            });
+            
+            // Image remove
+            $(document).on('click', '.dsm-img-remove', function(e){
+                e.preventDefault();
+                var $wrap = $(this).closest('.dsm-img-wrap');
+                var $field = $(this).closest('.dsm-field');
+                var $inp = $field.find('.dsm-img-input');
+                $inp.val('');
+                $wrap.remove();
             });
 
             // Add repeater item
@@ -615,8 +1146,20 @@ class Meta_Boxes {
                     break;
 
                 case 'select':
-                    echo '<select name="' . esc_attr( $name ) . '">';
-                    foreach ( $field['options'] as $ov => $ol ) {
+                    // 检查是否需要转换旧值到新值（'0'/'1'/'' -> 'no'/'yes'）
+                    $options = $field['options'];
+                    $has_yes_no = isset( $options['yes'] ) || isset( $options['no'] );
+                    if ( $has_yes_no ) {
+                        // 转换旧格式的值
+                        if ( $val === '1' ) {
+                            $val = 'yes';
+                        } elseif ( $val === '0' || $val === '' ) {
+                            $val = 'no';
+                        }
+                    }
+                    // 添加 autocomplete="off" 防止浏览器缓存表单值
+                    echo '<select name="' . esc_attr( $name ) . '" autocomplete="off">';
+                    foreach ( $options as $ov => $ol ) {
                         echo '<option value="' . esc_attr( $ov ) . '"' . selected( $val, $ov, false ) . '>' . esc_html( $ol ) . '</option>';
                     }
                     echo '</select>';
@@ -627,7 +1170,7 @@ class Meta_Boxes {
                     echo '<input type="text" name="' . esc_attr( $name ) . '" value="' . esc_attr( $val ) . '" class="dsm-img-input" placeholder="输入图片URL或点击选择" style="max-width:350px;"/>';
                     echo '<button type="button" class="button dsm-upload" style="margin-left:8px;">选择</button>';
                     if ( $val ) {
-                        echo '<img src="' . esc_url( $val ) . '" class="dsm-img-preview"/>';
+                        echo '<span class="dsm-img-wrap"><img src="' . esc_url( $val ) . '" class="dsm-img-preview"/><button type="button" class="dsm-img-remove">×</button></span>';
                     }
                     break;
 
@@ -655,7 +1198,7 @@ class Meta_Boxes {
                             if ( $sf['type'] === 'image' || $sf['type'] === 'file' ) {
                                 echo '<input type="text" name="' . esc_attr( $sn ) . '" value="' . esc_attr( $sv ) . '" class="dsm-img-input" placeholder="输入图片URL或点击选择" style="max-width:250px;"/>';
                                 echo '<button type="button" class="button dsm-upload" style="margin-left:8px;">选择</button>';
-                                if ( $sv ) echo '<img src="' . esc_url( $sv ) . '" class="dsm-img-preview"/>';
+                                if ( $sv ) echo '<span class="dsm-img-wrap"><img src="' . esc_url( $sv ) . '" class="dsm-img-preview"/><button type="button" class="dsm-img-remove">×</button></span>';
                             } elseif ( $sf['type'] === 'textarea' ) {
                                 echo '<textarea name="' . esc_attr( $sn ) . '" rows="2">' . esc_textarea( $sv ) . '</textarea>';
                             } else {
@@ -722,7 +1265,28 @@ class Meta_Boxes {
                     );
                 }
             }
-            update_post_meta( $post_id, '_developer_starter_modules', $modules );
+            
+            // 如果模块为空，检查是否是解决方案/落地页/功能清单展示模板且尚未填充过默认模块
+            // 这样可以给对应的 Page_Creator 机会填充默认模块
+            if ( empty( $modules ) ) {
+                $template = get_post_meta( $post_id, '_wp_page_template', true );
+                $solutions_filled = get_post_meta( $post_id, '_solutions_modules_filled', true );
+                $landing_filled = get_post_meta( $post_id, '_landing_modules_filled', true );
+                $features_showcase_filled = get_post_meta( $post_id, '_features_showcase_modules_filled', true );
+                
+                // 如果是解决方案模板且尚未填充，跳过保存空模块
+                if ( $template === 'templates/template-solutions.php' && ! $solutions_filled ) {
+                    // 不保存空模块，允许默认模块被填充
+                } elseif ( $template === 'templates/template-landing.php' && ! $landing_filled ) {
+                    // 不保存空模块，允许默认模块被填充
+                } elseif ( $template === 'templates/template-features-showcase.php' && ! $features_showcase_filled ) {
+                    // 不保存空模块，允许默认模块被填充
+                } else {
+                    update_post_meta( $post_id, '_developer_starter_modules', $modules );
+                }
+            } else {
+                update_post_meta( $post_id, '_developer_starter_modules', $modules );
+            }
         }
 
         if ( isset( $_POST['seo_nonce'] ) && wp_verify_nonce( $_POST['seo_nonce'], 'developer_starter_seo_nonce' ) ) {
@@ -746,6 +1310,9 @@ class Meta_Boxes {
                 // 检查是否是内容/描述类字段
                 if ( strpos( $k, 'content' ) !== false || strpos( $k, 'desc' ) !== false || strpos( $k, 'answer' ) !== false ) {
                     $out[ $k ] = wp_kses_post( $v );
+                // 排除 show_image 等布尔类型字段（它们不是图片URL）
+                } elseif ( strpos( $k, 'show_' ) !== false || strpos( $k, '_show' ) !== false || strpos( $k, 'enable_' ) !== false || strpos( $k, '_enable' ) !== false ) {
+                    $out[ $k ] = sanitize_text_field( $v );
                 // 检查是否是纯图片字段（字段名以_image结尾或等于image/logo/file）
                 } elseif ( preg_match( '/(_image|_logo|_file|_qrcode)$/', $k ) || $k === 'image' || $k === 'logo' || $k === 'file' || $k === 'avatar' ) {
                     $out[ $k ] = esc_url_raw( $v );
@@ -787,6 +1354,9 @@ class Meta_Boxes {
                         // 非HTML内容直接保存（比如emoji或纯class名）
                         $out[ $k ] = sanitize_text_field( $v );
                     }
+                // 检查是否是需要保留换行的多行文本字段
+                } elseif ( $k === 'features' ) {
+                    $out[ $k ] = sanitize_textarea_field( $v );
                 // 其他所有字段都作为普通文本处理
                 } else {
                     $out[ $k ] = sanitize_text_field( $v );

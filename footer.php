@@ -21,9 +21,9 @@
                 <div class="footer-widgets-grid">
                     <div class="footer-widget-area">
                         <h3><?php echo esc_html( developer_starter_get_option( 'footer_about_title', __( '关于我们', 'developer-starter' ) ) ); ?></h3>
-                        <p style="color: rgba(255,255,255,0.7); line-height: 1.8;">
-                            <?php echo esc_html( developer_starter_get_option( 'company_brief', __( '专业的企业服务提供商，致力于为客户提供优质的产品与服务。', 'developer-starter' ) ) ); ?>
-                        </p>
+                        <div style="color: rgba(255,255,255,0.7); line-height: 1.8;">
+                            <?php echo wp_kses_post( developer_starter_get_option( 'company_brief', __( '专业的企业服务提供商，致力于为客户提供优质的产品与服务。', 'developer-starter' ) ) ); ?>
+                        </div>
                     </div>
                     
                     <div class="footer-widget-area">
@@ -54,6 +54,7 @@
                         $phone = developer_starter_get_option( 'company_phone', '' );
                         $email = developer_starter_get_option( 'company_email', '' );
                         $address = developer_starter_get_option( 'company_address', '' );
+                        $working_hours = developer_starter_get_option( 'company_working_hours', '' );
                         ?>
                         <?php if ( $phone ) : ?>
                             <p style="color: rgba(255,255,255,0.7); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
@@ -70,31 +71,67 @@
                                 <span style="font-size: 1.2em;">📍</span><?php echo esc_html( $address ); ?>
                             </p>
                         <?php endif; ?>
+                        <?php if ( $working_hours ) : ?>
+                            <p style="color: rgba(255,255,255,0.7); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 1.2em;">🕐</span><?php echo esc_html( $working_hours ); ?>
+                            </p>
+                        <?php endif; ?>
                     </div>
                     
                     <div class="footer-widget-area">
                         <h3><?php echo esc_html( developer_starter_get_option( 'footer_follow_title', __( '关注我们', 'developer-starter' ) ) ); ?></h3>
                         <?php 
                         $wechat_qr = developer_starter_get_option( 'wechat_qrcode', '' );
-                        $weibo_url = developer_starter_get_option( 'weibo_url', '' );
+                        $wechat_text = developer_starter_get_option( 'wechat_qr_text', '扫码关注公众号' );
+                        $douyin_qr = developer_starter_get_option( 'douyin_qrcode', '' );
+                        $douyin_text = developer_starter_get_option( 'douyin_qr_text', '扫码关注抖音' );
                         ?>
-                        <div style="display: flex; gap: 15px; align-items: flex-start; flex-wrap: wrap;">
+                        <div class="qrcode-grid" style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
                             <?php if ( $wechat_qr ) : ?>
-                                <div>
-                                    <img src="<?php echo esc_url( $wechat_qr ); ?>" alt="<?php esc_attr_e( '微信二维码', 'developer-starter' ); ?>" style="max-width: 120px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);" />
-                                    <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-top: 10px;"><?php esc_html_e( '扫码关注公众号', 'developer-starter' ); ?></p>
+                                <div class="qrcode-item" style="text-align: center;">
+                                    <img src="<?php echo esc_url( $wechat_qr ); ?>" alt="<?php esc_attr_e( '微信二维码', 'developer-starter' ); ?>" style="width: 110px; height: 110px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); object-fit: cover;" />
+                                    <?php if ( $wechat_text ) : ?>
+                                        <p style="color: rgba(255,255,255,0.6); font-size: 0.8rem; margin-top: 8px; max-width: 110px;"><?php echo esc_html( $wechat_text ); ?></p>
+                                    <?php endif; ?>
                                 </div>
                             <?php endif; ?>
-                            <?php if ( $weibo_url ) : ?>
-                                <a href="<?php echo esc_url( $weibo_url ); ?>" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: #E6162D; border-radius: 50%; color: #fff; text-decoration: none; transition: transform 0.3s;" title="<?php esc_attr_e( '关注微博', 'developer-starter' ); ?>">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.737 5.439l-.002.004zM9.05 17.219c-.384.616-1.208.884-1.829.602-.612-.279-.793-.991-.406-1.593.379-.595 1.176-.861 1.793-.601.622.263.82.972.442 1.592zm1.27-1.627c-.141.237-.449.353-.689.253-.236-.09-.313-.361-.177-.586.138-.227.436-.346.672-.24.239.09.315.36.18.573h.014zm.176-2.719c-1.893-.493-4.033.45-4.836 2.118-.818 1.683-.052 3.535 1.765 4.141 1.871.629 4.225-.271 5.102-1.994.869-1.721.123-3.759-2.035-4.265h.004zm8.834-1.677c-.745-.187-1.254-.31-1.754-1.127l.002-.001a5.521 5.521 0 00-1.552-1.96c-.689-.583-1.012-.576-1.012-.576l-.002.003s.248-.016.695.182c.447.197 1.019.574 1.491 1.13.476.558.795 1.108.945 1.439.151.329.153.403.081.541-.074.137-.149.182-.346.229-.199.047-.452.09-.548.14zm-.4-2.25c-.636-.203-1.073-.267-1.499-.973l.001-.001a4.724 4.724 0 00-1.329-1.677c-.587-.498-.86-.5-.86-.5l-.002.002s.21-.015.593.155a4.07 4.07 0 011.275.966c.407.477.679.948.808 1.23.128.281.13.346.068.462-.063.118-.128.155-.296.197-.169.04-.387.077-.468.119l.709.019zm-4.4-2.683c-1.327.365-2.09 1.447-1.702 2.424.387.975 1.72 1.409 2.983 1.007 1.282-.405 2.023-1.51 1.665-2.495-.356-.999-1.68-1.329-2.946-.936z"/></svg>
-                                </a>
+                            <?php if ( $douyin_qr ) : ?>
+                                <div class="qrcode-item" style="text-align: center;">
+                                    <img src="<?php echo esc_url( $douyin_qr ); ?>" alt="<?php esc_attr_e( '抖音二维码', 'developer-starter' ); ?>" style="width: 110px; height: 110px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); object-fit: cover;" />
+                                    <?php if ( $douyin_text ) : ?>
+                                        <p style="color: rgba(255,255,255,0.6); font-size: 0.8rem; margin-top: 8px; max-width: 110px;"><?php echo esc_html( $douyin_text ); ?></p>
+                                    <?php endif; ?>
+                                </div>
                             <?php endif; ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <?php 
+        // 友情链接（仅首页显示）
+        $friend_links_enable = developer_starter_get_option( 'friend_links_enable', '' );
+        $friend_links = developer_starter_get_option( 'friend_links', array() );
+        if ( $friend_links_enable && is_front_page() && ! empty( $friend_links ) && is_array( $friend_links ) ) :
+        ?>
+        <div class="footer-friend-links" style="<?php echo esc_attr( $bottom_bg_style ); ?> border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <div class="container" style="padding: 20px 0;">
+                <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 15px;">
+                    <span style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">友情链接：</span>
+                    <?php foreach ( $friend_links as $link ) :
+                        $text = isset( $link['text'] ) ? $link['text'] : '';
+                        $url = isset( $link['url'] ) ? $link['url'] : '#';
+                        if ( $text ) :
+                    ?>
+                        <a href="<?php echo esc_url( $url ); ?>" target="_blank" rel="external nofollow noopener noreferrer" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.6)'"><?php echo esc_html( $text ); ?></a>
+                    <?php 
+                        endif;
+                    endforeach; ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
 
         <div class="footer-bottom" style="<?php echo esc_attr( $bottom_bg_style ); ?>">
             <div class="container">
@@ -227,115 +264,113 @@ document.addEventListener('DOMContentLoaded', function() {
 <?php endif; ?>
 
 <?php 
-// 页脚动画效果
+// 页脚动画效果 - 使用外部JS文件
 $effect_enabled = developer_starter_get_option( 'footer_effect_enable', '' );
 if ( $effect_enabled ) :
     $effect_type = developer_starter_get_option( 'footer_effect_type', 'particles' );
 ?>
 <script>
+// 传递特效类型给外部JS
+window.footerEffectType = '<?php echo esc_js( $effect_type ); ?>';
+</script>
+<?php endif; ?>
+
+<?php 
+// 隐私政策/Cookie提示条（GDPR）
+$privacy_banner_enable = developer_starter_get_option( 'privacy_banner_enable', '' );
+if ( $privacy_banner_enable ) :
+    $privacy_text = developer_starter_get_option( 'privacy_banner_text', '本网站使用Cookie和类似技术来提升您的体验。继续使用本网站即表示您同意我们的隐私政策。' );
+    $privacy_link_text = developer_starter_get_option( 'privacy_banner_link_text', '了解更多' );
+    $privacy_link_url = developer_starter_get_option( 'privacy_banner_link_url', '' );
+    $privacy_btn_text = developer_starter_get_option( 'privacy_banner_btn_text', '全部接受' );
+    $privacy_decline_text = developer_starter_get_option( 'privacy_banner_decline_text', '' );
+    $privacy_bg = developer_starter_get_option( 'privacy_banner_bg', '#1e293b' );
+    $privacy_text_color = developer_starter_get_option( 'privacy_banner_text_color', '#ffffff' );
+?>
+<div id="privacy-banner" class="privacy-banner" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999; background: <?php echo esc_attr( $privacy_bg ); ?>; color: <?php echo esc_attr( $privacy_text_color ); ?>; padding: 15px 20px; box-shadow: 0 -4px 20px rgba(0,0,0,0.15);">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+        <div class="privacy-banner-content" style="flex: 1; min-width: 300px;">
+            <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">
+                🍪 <?php echo esc_html( $privacy_text ); ?>
+                <?php if ( $privacy_link_url ) : ?>
+                    <a href="<?php echo esc_url( $privacy_link_url ); ?>" style="color: <?php echo esc_attr( $privacy_text_color ); ?>; text-decoration: underline; margin-left: 5px;" target="_blank"><?php echo esc_html( $privacy_link_text ); ?></a>
+                <?php endif; ?>
+            </p>
+        </div>
+        <div class="privacy-banner-actions" style="display: flex; gap: 10px; flex-shrink: 0;">
+            <?php if ( $privacy_decline_text ) : ?>
+                <button type="button" id="privacy-decline" style="padding: 10px 24px; background: transparent; color: <?php echo esc_attr( $privacy_text_color ); ?>; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                    <?php echo esc_html( $privacy_decline_text ); ?>
+                </button>
+            <?php endif; ?>
+            <button type="button" id="privacy-accept" style="padding: 10px 24px; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                <?php echo esc_html( $privacy_btn_text ); ?>
+            </button>
+        </div>
+    </div>
+</div>
+<style>
+#privacy-banner button:hover {
+    transform: translateY(-2px);
+}
+#privacy-banner #privacy-accept:hover {
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+}
+#privacy-banner #privacy-decline:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.5);
+}
+@media (max-width: 768px) {
+    #privacy-banner .container {
+        flex-direction: column;
+        text-align: center;
+    }
+    #privacy-banner .privacy-banner-content {
+        min-width: auto;
+    }
+    #privacy-banner .privacy-banner-actions {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+<script>
 (function() {
-    var canvas = document.getElementById('footer-effect-canvas');
-    if (!canvas) return;
-    var ctx = canvas.getContext('2d');
-    var effectType = '<?php echo esc_js( $effect_type ); ?>';
-    var particles = [];
+    var banner = document.getElementById('privacy-banner');
+    var acceptBtn = document.getElementById('privacy-accept');
+    var declineBtn = document.getElementById('privacy-decline');
+    var storageKey = 'ds_privacy_consent';
     
-    function resize() {
-        canvas.width = canvas.parentElement.offsetWidth;
-        canvas.height = canvas.parentElement.offsetHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
+    if (!banner) return;
     
-    // 初始化粒子/对象
-    function init() {
-        particles = [];
-        var count = effectType === 'stars' ? 80 : (effectType === 'particles' ? 50 : 30);
-        for (var i = 0; i < count; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                size: Math.random() * 3 + 1,
-                speedX: (Math.random() - 0.5) * 0.5,
-                speedY: (Math.random() - 0.5) * 0.5,
-                opacity: Math.random() * 0.5 + 0.2,
-                phase: Math.random() * Math.PI * 2
-            });
-        }
+    // 检查是否已做出选择
+    var consent = localStorage.getItem(storageKey);
+    if (!consent) {
+        banner.style.display = 'block';
     }
-    init();
     
-    function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        if (effectType === 'particles') {
-            particles.forEach(function(p) {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255,255,255,' + p.opacity + ')';
-                ctx.fill();
-                p.x += p.speedX;
-                p.y += p.speedY;
-                if (p.x < 0) p.x = canvas.width;
-                if (p.x > canvas.width) p.x = 0;
-                if (p.y < 0) p.y = canvas.height;
-                if (p.y > canvas.height) p.y = 0;
-            });
-        } else if (effectType === 'lines') {
-            ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-            ctx.lineWidth = 1;
-            particles.forEach(function(p, i) {
-                particles.forEach(function(p2, j) {
-                    if (i < j) {
-                        var dx = p.x - p2.x, dy = p.y - p2.y;
-                        var dist = Math.sqrt(dx*dx + dy*dy);
-                        if (dist < 120) {
-                            ctx.beginPath();
-                            ctx.moveTo(p.x, p.y);
-                            ctx.lineTo(p2.x, p2.y);
-                            ctx.globalAlpha = 1 - dist/120;
-                            ctx.stroke();
-                            ctx.globalAlpha = 1;
-                        }
-                    }
-                });
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255,255,255,0.5)';
-                ctx.fill();
-                p.x += p.speedX;
-                p.y += p.speedY;
-                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
-            });
-        } else if (effectType === 'waves') {
-            var time = Date.now() * 0.001;
-            for (var w = 0; w < 3; w++) {
-                ctx.beginPath();
-                ctx.moveTo(0, canvas.height);
-                for (var x = 0; x <= canvas.width; x += 10) {
-                    var y = canvas.height - 30 - w * 20 + Math.sin(x * 0.01 + time + w) * 15;
-                    ctx.lineTo(x, y);
-                }
-                ctx.lineTo(canvas.width, canvas.height);
-                ctx.closePath();
-                ctx.fillStyle = 'rgba(255,255,255,' + (0.03 + w * 0.02) + ')';
-                ctx.fill();
-            }
-        } else if (effectType === 'stars') {
-            var time = Date.now() * 0.002;
-            particles.forEach(function(p) {
-                var twinkle = Math.sin(time + p.phase) * 0.5 + 0.5;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size * twinkle, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255,255,255,' + (p.opacity * twinkle) + ')';
-                ctx.fill();
-            });
-        }
-        
-        requestAnimationFrame(draw);
+    function hideBanner() {
+        banner.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        banner.style.transform = 'translateY(100%)';
+        banner.style.opacity = '0';
+        setTimeout(function() {
+            banner.style.display = 'none';
+        }, 300);
     }
-    draw();
+    
+    if (acceptBtn) {
+        acceptBtn.addEventListener('click', function() {
+            localStorage.setItem(storageKey, 'all');
+            hideBanner();
+        });
+    }
+    
+    if (declineBtn) {
+        declineBtn.addEventListener('click', function() {
+            localStorage.setItem(storageKey, 'essential');
+            hideBanner();
+        });
+    }
 })();
 </script>
 <?php endif; ?>

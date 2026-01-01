@@ -19,7 +19,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 if ( ! function_exists( 'developer_starter_get_option' ) ) {
     function developer_starter_get_option( $key, $default = '' ) {
-        $options = get_option( 'developer_starter_options', array() );
+        // 使用静态缓存避免重复数据库查询
+        static $options = null;
+        if ( $options === null ) {
+            $options = get_option( 'developer_starter_options', array() );
+        }
         return isset( $options[ $key ] ) ? $options[ $key ] : $default;
     }
 }
@@ -259,5 +263,288 @@ if ( ! function_exists( 'developer_starter_auto_set_featured_image' ) ) {
                 set_post_thumbnail( $post_id, $attachment_id );
             }
         }
+    }
+}
+
+/**
+ * 图片延迟加载
+ * 为文章内容中的图片添加 loading="lazy" 属性
+ */
+add_filter( 'the_content', 'developer_starter_lazy_load_images', 99 );
+add_filter( 'post_thumbnail_html', 'developer_starter_lazy_load_images', 99 );
+if ( ! function_exists( 'developer_starter_lazy_load_images' ) ) {
+    function developer_starter_lazy_load_images( $content ) {
+        if ( ! developer_starter_get_option( 'lazy_load_images', '' ) ) {
+            return $content;
+        }
+        
+        // 为没有 loading 属性的 img 标签添加 loading="lazy"
+        $content = preg_replace(
+            '/<img(?![^>]*loading=)([^>]*)>/i',
+            '<img loading="lazy"$1>',
+            $content
+        );
+        
+        return $content;
+    }
+}
+
+/**
+ * iframe 延迟加载
+ */
+add_filter( 'the_content', 'developer_starter_lazy_load_iframes', 99 );
+if ( ! function_exists( 'developer_starter_lazy_load_iframes' ) ) {
+    function developer_starter_lazy_load_iframes( $content ) {
+        if ( ! developer_starter_get_option( 'lazy_load_iframes', '' ) ) {
+            return $content;
+        }
+        
+        // 为 iframe 添加 loading="lazy"
+        $content = preg_replace(
+            '/<iframe(?![^>]*loading=)([^>]*)>/i',
+            '<iframe loading="lazy"$1>',
+            $content
+        );
+        
+        return $content;
+    }
+}
+
+/**
+ * WebP 图片转换
+ * 上传图片时自动生成 WebP 格式副本
+ */
+add_filter( 'wp_generate_attachment_metadata', 'developer_starter_generate_webp', 10, 2 );
+if ( ! function_exists( 'developer_starter_generate_webp' ) ) {
+    function developer_starter_generate_webp( $metadata, $attachment_id ) {
+        if ( ! developer_starter_get_option( 'webp_enable', '' ) ) {
+            return $metadata;
+        }
+        
+        // 检查 GD 库 WebP 支持
+        if ( ! function_exists( 'imagewebp' ) ) {
+            return $metadata;
+        }
+        
+        $file = get_attached_file( $attachment_id );
+        if ( ! $file || ! file_exists( $file ) ) {
+            return $metadata;
+        }
+        
+        $info = pathinfo( $file );
+        $ext = strtolower( $info['extension'] ?? '' );
+        
+        // 只转换 jpg/png/gif
+        if ( ! in_array( $ext, array( 'jpg', 'jpeg', 'png', 'gif' ) ) ) {
+            return $metadata;
+        }
+        
+        $quality = (int) developer_starter_get_option( 'webp_quality', '80' );
+        $quality = max( 1, min( 100, $quality ) );
+        
+        // 转换原图
+        developer_starter_convert_to_webp( $file, $quality );
+        
+        // 转换各尺寸
+        if ( ! empty( $metadata['sizes'] ) ) {
+            $upload_dir = dirname( $file );
+            foreach ( $metadata['sizes'] as $size => $size_info ) {
+                $size_file = $upload_dir . '/' . $size_info['file'];
+                if ( file_exists( $size_file ) ) {
+                    developer_starter_convert_to_webp( $size_file, $quality );
+                }
+            }
+        }
+        
+        return $metadata;
+    }
+}
+
+/**
+ * 将图片转换为 WebP
+ */
+if ( ! function_exists( 'developer_starter_convert_to_webp' ) ) {
+    function developer_starter_convert_to_webp( $file, $quality = 80 ) {
+        $info = pathinfo( $file );
+        $ext = strtolower( $info['extension'] ?? '' );
+        $webp_file = $info['dirname'] . '/' . $info['filename'] . '.webp';
+        
+        // 如果已存在则跳过
+        if ( file_exists( $webp_file ) ) {
+            return $webp_file;
+        }
+        
+        $image = null;
+        
+        switch ( $ext ) {
+            case 'jpg':
+            case 'jpeg':
+                $image = @imagecreatefromjpeg( $file );
+                break;
+            case 'png':
+                $image = @imagecreatefrompng( $file );
+                if ( $image ) {
+                    imagepalettetotruecolor( $image );
+                    imagealphablending( $image, true );
+                    imagesavealpha( $image, true );
+                }
+                break;
+            case 'gif':
+                $image = @imagecreatefromgif( $file );
+                break;
+        }
+        
+        if ( $image ) {
+            imagewebp( $image, $webp_file, $quality );
+            imagedestroy( $image );
+            return $webp_file;
+        }
+        
+        return false;
+    }
+}
+
+/**
+ * 登录失败限制
+ */
+add_filter( 'authenticate', 'developer_starter_check_login_attempts', 30, 3 );
+if ( ! function_exists( 'developer_starter_check_login_attempts' ) ) {
+    function developer_starter_check_login_attempts( $user, $username, $password ) {
+        if ( ! developer_starter_get_option( 'login_limit_enable', '' ) ) {
+            return $user;
+        }
+        
+        if ( empty( $username ) ) {
+            return $user;
+        }
+        
+        $ip = developer_starter_get_client_ip();
+        $transient_key = 'login_attempts_' . md5( $ip . $username );
+        $lockout_key = 'login_lockout_' . md5( $ip . $username );
+        
+        // 检查是否被锁定
+        if ( get_transient( $lockout_key ) ) {
+            $lockout_duration = (int) developer_starter_get_option( 'login_lockout_duration', '15' );
+            return new WP_Error(
+                'too_many_attempts',
+                sprintf( 
+                    __( '登录尝试次数过多，请在 %d 分钟后再试。', 'developer-starter' ),
+                    $lockout_duration 
+                )
+            );
+        }
+        
+        return $user;
+    }
+}
+
+/**
+ * 记录登录失败
+ */
+add_action( 'wp_login_failed', 'developer_starter_record_login_failure' );
+if ( ! function_exists( 'developer_starter_record_login_failure' ) ) {
+    function developer_starter_record_login_failure( $username ) {
+        if ( ! developer_starter_get_option( 'login_limit_enable', '' ) ) {
+            return;
+        }
+        
+        $ip = developer_starter_get_client_ip();
+        $transient_key = 'login_attempts_' . md5( $ip . $username );
+        $lockout_key = 'login_lockout_' . md5( $ip . $username );
+        
+        $max_attempts = (int) developer_starter_get_option( 'login_max_attempts', '5' );
+        $lockout_duration = (int) developer_starter_get_option( 'login_lockout_duration', '15' );
+        
+        $attempts = (int) get_transient( $transient_key );
+        $attempts++;
+        
+        if ( $attempts >= $max_attempts ) {
+            // 锁定账户
+            set_transient( $lockout_key, true, $lockout_duration * MINUTE_IN_SECONDS );
+            delete_transient( $transient_key );
+            
+            // 通知管理员
+            if ( developer_starter_get_option( 'login_notify_admin', '' ) ) {
+                $admin_email = get_option( 'admin_email' );
+                $subject = sprintf( '[%s] 登录安全提醒', get_bloginfo( 'name' ) );
+                $message = sprintf(
+                    "用户名 %s 因多次登录失败已被临时锁定。\n\nIP 地址: %s\n时间: %s\n锁定时长: %d 分钟",
+                    $username,
+                    $ip,
+                    current_time( 'mysql' ),
+                    $lockout_duration
+                );
+                wp_mail( $admin_email, $subject, $message );
+            }
+        } else {
+            // 记录尝试次数，1小时内有效
+            set_transient( $transient_key, $attempts, HOUR_IN_SECONDS );
+        }
+    }
+}
+
+/**
+ * 获取客户端 IP
+ */
+if ( ! function_exists( 'developer_starter_get_client_ip' ) ) {
+    function developer_starter_get_client_ip() {
+        $ip = '';
+        
+        if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+            $ip = explode( ',', $_SERVER['HTTP_X_FORWARDED_FOR'] )[0];
+        } elseif ( ! empty( $_SERVER['REMOTE_ADDR'] ) ) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        
+        return sanitize_text_field( trim( $ip ) );
+    }
+}
+
+/**
+ * 登录成功后清除失败记录
+ */
+add_action( 'wp_login', 'developer_starter_clear_login_attempts', 10, 2 );
+if ( ! function_exists( 'developer_starter_clear_login_attempts' ) ) {
+    function developer_starter_clear_login_attempts( $user_login, $user ) {
+        $ip = developer_starter_get_client_ip();
+        $transient_key = 'login_attempts_' . md5( $ip . $user_login );
+        delete_transient( $transient_key );
+    }
+}
+
+/**
+ * 在登录错误信息中显示剩余次数
+ */
+add_filter( 'login_errors', 'developer_starter_login_error_message' );
+if ( ! function_exists( 'developer_starter_login_error_message' ) ) {
+    function developer_starter_login_error_message( $error ) {
+        if ( ! developer_starter_get_option( 'login_limit_enable', '' ) ) {
+            return $error;
+        }
+        
+        if ( ! developer_starter_get_option( 'login_show_remaining', '1' ) ) {
+            return $error;
+        }
+        
+        // 从 POST 获取用户名
+        $username = isset( $_POST['log'] ) ? sanitize_user( $_POST['log'] ) : '';
+        if ( empty( $username ) ) {
+            return $error;
+        }
+        
+        $ip = developer_starter_get_client_ip();
+        $transient_key = 'login_attempts_' . md5( $ip . $username );
+        $attempts = (int) get_transient( $transient_key );
+        $max_attempts = (int) developer_starter_get_option( 'login_max_attempts', '5' );
+        
+        $remaining = $max_attempts - $attempts;
+        
+        if ( $remaining > 0 && $remaining < $max_attempts ) {
+            $error .= sprintf( '<br><strong>剩余尝试次数：%d</strong>', $remaining );
+        }
+        
+        return $error;
     }
 }
