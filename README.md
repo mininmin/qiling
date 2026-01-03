@@ -86,6 +86,12 @@ developer-starter-theme/
 
 ## License
 
-GPL v2 or later
+源码遵循 GPL v2。
+本项目采用双授权。
+商业使用需另行购买授权。
+License: GPL v2 + Commercial License
+Commercial use requires a separate license.
+
+
 
 
