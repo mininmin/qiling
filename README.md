@@ -22,12 +22,14 @@
 
 
 ## License
+可以个人免费使用，但不能商用。
 
 源码遵循 GPL v2。  
 本项目采用双授权。  
 商业使用需另行购买授权。  
 License: GPL v2 + Commercial License  
 Commercial use requires a separate license.  
+
 
 
 
